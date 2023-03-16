@@ -32,7 +32,7 @@ android {
         jvmTarget = '1.8'
     }
 
-    buildFeatures{
+    buildFeatures {
         dataBinding true
     }
 
@@ -48,9 +48,10 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
-    /*para utilizar viewModelScope*/
-    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.6.0'
+    /*para utilizar viewModelScope al actualizar da problemas, creo que pide actualizacion de IDE*/
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
 
+    /*esto es para utilizar el by viewModels()*/
     implementation 'androidx.activity:activity-ktx:1.6.1'
 
 }
