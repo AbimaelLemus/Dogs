@@ -4,9 +4,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dessoft.dogs.Dog
 import com.dessoft.dogs.DogListViewModel
-import com.dessoft.dogs.R
 import com.dessoft.dogs.databinding.ActivityDogListBinding
 
 class DogListActivity : AppCompatActivity() {

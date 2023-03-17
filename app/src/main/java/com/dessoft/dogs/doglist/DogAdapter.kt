@@ -43,7 +43,7 @@ class DogAdapter : ListAdapter<Dog, DogAdapter.DogViewHolder>(DiffCallback) {
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(dog: Dog) {
-            binding.tvDogName.text = dog.name
+            binding.tvDogName.text = dog.nameEs
         }
 
     }

@@ -1,10 +1,10 @@
 package com.dessoft.dogs.api
 
-import com.dessoft.dogs.Dog
+import com.dessoft.dogs.api.responses.DogListApiResponse
 import com.dessoft.dogs.utils.BASE_URL
+import com.dessoft.dogs.utils.GET_ALL_DOGS_URL
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.create
 import retrofit2.http.GET
 
 private val retrofit = Retrofit.Builder()
@@ -13,8 +13,8 @@ private val retrofit = Retrofit.Builder()
     .build()
 
 interface ApiService {
-    @GET("dogs")
-    suspend fun getAllDogs(): List<Dog>
+    @GET(GET_ALL_DOGS_URL)
+    suspend fun getAllDogs(): DogListApiResponse
 }
 
 object DogsApi {
