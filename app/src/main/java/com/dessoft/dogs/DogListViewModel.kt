@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.dessoft.dogs.api.ApiResponseStatus
 import com.dessoft.dogs.doglist.DogRepository
 import kotlinx.coroutines.launch
 
@@ -15,6 +16,13 @@ class DogListViewModel : ViewModel() {
     val dogList: LiveData<List<Dog>>
         get() = _dogList
 
+    //lo de estatus sirve para controlar los estados de la app, al igual que la clase ApiResponseStatus
+    private val _status = MutableLiveData<ApiResponseStatus>()
+
+    //encapsulamiento
+    val status: LiveData<ApiResponseStatus>
+        get() = _status
+
     private val dogRepository = DogRepository()
 
     init {
@@ -23,7 +31,13 @@ class DogListViewModel : ViewModel() {
 
     private fun downloadDogs() {
         viewModelScope.launch {
-            _dogList.value = dogRepository.downloadDogs()
+            _status.value = ApiResponseStatus.LOADING
+            try {
+                _dogList.value = dogRepository.downloadDogs()
+                _status.value = ApiResponseStatus.SUCCESS
+            } catch (e: Exception) {
+                _status.value = ApiResponseStatus.ERROR
+            }
         }
     }
 

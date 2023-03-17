@@ -6,13 +6,29 @@
 
     </data>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvDogRecycler"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context=".doglist.DogListActivity"
-        tools:itemCount="3"
-        tools:listitem="@layout/dog_list_item">
+        android:layout_height="match_parent">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvDogRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:context=".doglist.DogListActivity"
+            tools:itemCount="3"
+            tools:listitem="@layout/dog_list_item">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <ProgressBar
+            android:id="@+id/pbDogList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:layout_gravity="center"
+            android:indeterminate="true" />
+
+    </FrameLayout>
+
 </layout>
