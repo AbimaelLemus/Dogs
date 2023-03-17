@@ -5,6 +5,7 @@ data class Dog(
     val index: Int,
     val nameEn: String,
     val nameEs: String,
+    val type: String,
     val heightFemale: Double,
     val heightMale: Double,
     val imageUrl: String,

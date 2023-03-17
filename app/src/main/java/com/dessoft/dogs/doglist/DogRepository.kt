@@ -2,6 +2,7 @@ package com.dessoft.dogs.doglist
 
 import com.dessoft.dogs.Dog
 import com.dessoft.dogs.api.DogsApi.retrofitService
+import com.dessoft.dogs.api.dto.DogDTOMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -11,9 +12,11 @@ class DogRepository {
         return withContext(
             Dispatchers.IO /*descargar datos u obtener de db */
         ) {
-            //getFakeDogs()
+            //getFakeDogs() //dummy, sin consumir el servicio
             val dogListApiResponse = retrofitService.getAllDogs()
-            dogListApiResponse.data.dogs
+            val dogDTOList = dogListApiResponse.data.dogs
+            val dogDTOMapper = DogDTOMapper()
+            dogDTOMapper.fromDogDTOListToDogDomainList(dogDTOList)
         }
     }
 
