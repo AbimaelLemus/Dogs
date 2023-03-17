@@ -1,6 +1,7 @@
 package com.dessoft.dogs.doglist
 
 import com.dessoft.dogs.Dog
+import com.dessoft.dogs.api.DogsApi.retrofitService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -10,7 +11,8 @@ class DogRepository {
         return withContext(
             Dispatchers.IO /*descargar datos u obtener de db */
         ) {
-            getFakeDogs()
+            //getFakeDogs()
+            retrofitService.getAllDogs()
         }
     }
 
