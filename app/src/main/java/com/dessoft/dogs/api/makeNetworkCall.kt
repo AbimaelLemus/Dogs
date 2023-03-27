@@ -7,8 +7,8 @@ import java.net.UnknownHostException
 
 suspend fun <T> makeNetworkCall(
     call: suspend () -> T
-): ApiResponseStatus<T> {
-    return withContext(
+): ApiResponseStatus<T> =
+    withContext(
         Dispatchers.IO /*descargar datos u obtener de db */
     ) {
         //getFakeDogs() //dummy, sin consumir el servicio
@@ -19,5 +19,5 @@ suspend fun <T> makeNetworkCall(
         } catch (e: Exception) {
             ApiResponseStatus.Error(R.string.unknown_error)
         }
+
     }
-}
