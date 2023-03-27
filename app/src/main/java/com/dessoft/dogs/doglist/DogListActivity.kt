@@ -42,21 +42,20 @@ class DogListActivity : AppCompatActivity() {
         }
 
         dogListViewModel.status.observe(this) { status ->
+
             when (status) {
-                ApiResponseStatus.LOADING -> { //mostrar progressBar
+                is ApiResponseStatus.Error -> {
+                    //mostrar Toast Y ocultar el progressBar
+                    pb.visibility = View.GONE
+                    Toast.makeText(this, status.message, Toast.LENGTH_LONG).show()
+                }
+                is ApiResponseStatus.Loading -> {
+                    //mostrar progressBar
                     pb.visibility = View.VISIBLE
                 }
-                ApiResponseStatus.ERROR -> { //mostrar Toast Y ocultar el progressBar
-                    pb.visibility = View.GONE
-                    Toast.makeText(this, "Error al descargar los datos", Toast.LENGTH_LONG).show()
-                }
-                ApiResponseStatus.SUCCESS -> { //ocultar el progressBar
-                    pb.visibility = View.GONE
-                }
-                else -> {
+                is ApiResponseStatus.Suceess -> {
                     //ocultar el progressBar
                     pb.visibility = View.GONE
-                    Toast.makeText(this, "Status desconocido", Toast.LENGTH_LONG).show()
                 }
             }
         }

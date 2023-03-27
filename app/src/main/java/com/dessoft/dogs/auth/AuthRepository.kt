@@ -1,5 +1,6 @@
 package com.dessoft.dogs.auth
 
+import com.dessoft.dogs.Dog
 import com.dessoft.dogs.api.ApiResponseStatus
 import com.dessoft.dogs.api.DogsApi
 import com.dessoft.dogs.api.dto.DogDTOMapper
@@ -11,7 +12,7 @@ class AuthRepository {
         email: String,
         password: String,
         passwordConfirmation: String
-    ): ApiResponseStatus<> = makeNetworkCall {
+    ): ApiResponseStatus<> =  {
         //getFakeDogs() //dummy, sin consumir el servicio
 
         val signUpDTO = SignUpDTO(email, password, passwordConfirmation)

@@ -1,22 +1,31 @@
 package com.dessoft.dogs.doglist
 
 import com.dessoft.dogs.Dog
+import com.dessoft.dogs.R
+import com.dessoft.dogs.api.ApiResponseStatus
 import com.dessoft.dogs.api.DogsApi.retrofitService
 import com.dessoft.dogs.api.dto.DogDTOMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.net.UnknownHostException
 
 class DogRepository {
 
-    suspend fun downloadDogs(): List<Dog> {
+    suspend fun downloadDogs(): ApiResponseStatus {
         return withContext(
             Dispatchers.IO /*descargar datos u obtener de db */
         ) {
             //getFakeDogs() //dummy, sin consumir el servicio
-            val dogListApiResponse = retrofitService.getAllDogs()
-            val dogDTOList = dogListApiResponse.data.dogs
-            val dogDTOMapper = DogDTOMapper()
-            dogDTOMapper.fromDogDTOListToDogDomainList(dogDTOList)
+            try {
+                val dogListApiResponse = retrofitService.getAllDogs()
+                val dogDTOList = dogListApiResponse.data.dogs
+                val dogDTOMapper = DogDTOMapper()
+                ApiResponseStatus.Suceess(dogDTOMapper.fromDogDTOListToDogDomainList(dogDTOList))
+            } catch (e: UnknownHostException) {
+                ApiResponseStatus.Error(R.string.unknown_host_exception_error)
+            }catch (e:java.lang.Exception){
+                ApiResponseStatus.Error(R.string.unknown_error)
+            }
         }
     }
 
