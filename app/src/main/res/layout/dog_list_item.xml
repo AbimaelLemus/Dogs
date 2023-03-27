@@ -2,12 +2,34 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/tvDogName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="?attr/selectableItemBackground"
-        android:padding="8dp"
-        tools:text="@string/app_name" />
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/dog_list_item_layout"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/dog_list_item_background"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/dog_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                tools:src="@drawable/ic_check_black" />
+
+            <TextView
+                android:id="@+id/tvNameDog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="1"
+                tools:text="Chihuahua" />
+
+        </RelativeLayout>
+    </FrameLayout>
 </layout>
