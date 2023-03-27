@@ -1,9 +1,7 @@
 package com.dessoft.dogs.api
 
-import com.dessoft.dogs.Dog
-
-sealed class ApiResponseStatus() {
-    class Suceess(val dogList: List<Dog>) : ApiResponseStatus()
-    class Loading() : ApiResponseStatus()
-    class Error(val messageId: Int) : ApiResponseStatus()
+sealed class ApiResponseStatus<T>() {
+    class Suceess<T>(val data: T) : ApiResponseStatus<T>()
+    class Loading<T>() : ApiResponseStatus<T>()
+    class Error<T>(val messageId: Int) : ApiResponseStatus<T>()
 }

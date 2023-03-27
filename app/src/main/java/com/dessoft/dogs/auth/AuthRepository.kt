@@ -1,14 +1,8 @@
 package com.dessoft.dogs.auth
 
-import com.dessoft.dogs.Dog
-import com.dessoft.dogs.api.ApiResponseStatus
-import com.dessoft.dogs.api.DogsApi
-import com.dessoft.dogs.api.dto.DogDTOMapper
-import com.dessoft.dogs.api.dto.SignUpDTO
-
 class AuthRepository {
 
-    suspend fun signUp(
+    /*suspend fun signUp(
         email: String,
         password: String,
         passwordConfirmation: String
@@ -21,6 +15,6 @@ class AuthRepository {
         val dogDTOMapper = DogDTOMapper()
         dogDTOMapper.fromDogDTOListToDogDomainList(dogDTOList)
     }
-}
+}*/
 
 }

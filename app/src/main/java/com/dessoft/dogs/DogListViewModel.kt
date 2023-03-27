@@ -17,10 +17,10 @@ class DogListViewModel : ViewModel() {
         get() = _dogList
 
     //lo de estatus sirve para controlar los estados de la app, al igual que la clase ApiResponseStatus
-    private val _status = MutableLiveData<ApiResponseStatus>()
+    private val _status = MutableLiveData<ApiResponseStatus<List<Dog>>>()
 
     //encapsulamiento
-    val status: LiveData<ApiResponseStatus>
+    val status: LiveData<ApiResponseStatus<List<Dog>>>
         get() = _status
 
     private val dogRepository = DogRepository()
@@ -36,10 +36,11 @@ class DogListViewModel : ViewModel() {
         }
     }
 
-    private fun handleResponseStatus(apiResponseStatus: ApiResponseStatus) {
+    private fun handleResponseStatus(apiResponseStatus: ApiResponseStatus<List<Dog>>) {
         if (apiResponseStatus is ApiResponseStatus.Suceess) {
-            _dogList.value = apiResponseStatus.dogList
+            _dogList.value = apiResponseStatus.data!!
         }
+        _status.value = apiResponseStatus
     }
 
 }

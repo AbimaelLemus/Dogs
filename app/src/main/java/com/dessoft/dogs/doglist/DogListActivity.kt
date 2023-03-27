@@ -47,7 +47,7 @@ class DogListActivity : AppCompatActivity() {
                 is ApiResponseStatus.Error -> {
                     //mostrar Toast Y ocultar el progressBar
                     pb.visibility = View.GONE
-                    Toast.makeText(this, status.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, status.messageId, Toast.LENGTH_LONG).show()
                 }
                 is ApiResponseStatus.Loading -> {
                     //mostrar progressBar
