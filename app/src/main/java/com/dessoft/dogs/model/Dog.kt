@@ -1,4 +1,4 @@
-package com.dessoft.dogs
+package com.dessoft.dogs.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

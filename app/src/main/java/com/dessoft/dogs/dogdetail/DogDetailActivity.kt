@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import coil.load
-import com.dessoft.dogs.Dog
+import com.dessoft.dogs.model.Dog
 import com.dessoft.dogs.R
 import com.dessoft.dogs.databinding.ActivityDogDetailBinding
 

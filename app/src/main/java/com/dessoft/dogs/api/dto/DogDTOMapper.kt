@@ -1,6 +1,6 @@
 package com.dessoft.dogs.api.dto
 
-import com.dessoft.dogs.Dog
+import com.dessoft.dogs.model.Dog
 
 class DogDTOMapper {
 

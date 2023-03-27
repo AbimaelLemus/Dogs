@@ -23,4 +23,8 @@
 
     <string name="unknown_host_exception_error">There is no internet connection</string>
     <string name="unknown_error">There was an error</string>
+    <string name="sign_up_error">Error SignUp </string>
+    <string name="sign_in_error">error SignIn</string>
+    <string name="user_already_exists">User already exists</string>
+
 </resources>

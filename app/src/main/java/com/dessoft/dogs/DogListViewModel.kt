@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dessoft.dogs.api.ApiResponseStatus
 import com.dessoft.dogs.doglist.DogRepository
+import com.dessoft.dogs.model.Dog
 import kotlinx.coroutines.launch
 
 class DogListViewModel : ViewModel() {

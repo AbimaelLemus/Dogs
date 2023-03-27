@@ -6,7 +6,7 @@
 
         <variable
             name="dog"
-            type="com.dessoft.dogs.Dog" />
+            type="com.dessoft.dogs.model.Dog" />
     </data>
 
     <FrameLayout

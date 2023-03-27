@@ -1,6 +1,6 @@
 package com.dessoft.dogs.doglist
 
-import com.dessoft.dogs.Dog
+import com.dessoft.dogs.model.Dog
 import com.dessoft.dogs.api.ApiResponseStatus
 import com.dessoft.dogs.api.DogsApi.retrofitService
 import com.dessoft.dogs.api.dto.DogDTOMapper
