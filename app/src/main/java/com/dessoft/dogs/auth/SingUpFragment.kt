@@ -1,5 +1,6 @@
 package com.dessoft.dogs.auth
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -10,7 +11,24 @@ import com.dessoft.dogs.R
 import com.dessoft.dogs.databinding.FragmentSingUpBinding
 
 class SingUpFragment : Fragment() {
+
+    interface SignUpFragmentActions {
+        fun onSignUpFieldsValidated(email: String, password: String, passwordConfirmation: String)
+    }
+
+    private lateinit var signUpFragmentActions: SignUpFragmentActions
     private lateinit var binding: FragmentSingUpBinding
+
+    /*
+    * cuando el fragment se une al activity le pasa un context y ese contexto lo ocupamos como esta en el interface */
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        signUpFragmentActions = try {
+            context as SignUpFragmentActions
+        } catch (e: java.lang.ClassCastException) {
+            throw ClassCastException("$context must implement LoginFragmentActions")
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,8 +72,8 @@ class SingUpFragment : Fragment() {
             binding.passwordInput.error = getString(R.string.passwords_do_not_match)
             return
         }
+        signUpFragmentActions.onSignUpFieldsValidated(email, password, passwordConfirmation)
 
-        //performa sing up
 
     }
 
