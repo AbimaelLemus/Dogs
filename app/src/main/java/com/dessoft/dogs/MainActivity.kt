@@ -3,6 +3,7 @@ package com.dessoft.dogs
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.dessoft.dogs.api.ApiServiceInterceptor
 import com.dessoft.dogs.auth.LoginActivity
 import com.dessoft.dogs.databinding.ActivityMainBinding
 import com.dessoft.dogs.doglist.DogListActivity
@@ -19,6 +20,9 @@ class MainActivity : AppCompatActivity() {
         if (user == null) {
             openLoginActivity()
             return
+        } else {
+            //si el usuario existe entonces mandamos al interceptor el token
+            ApiServiceInterceptor.setSessionToken(user.authenticationToken)
         }
 
         binding.settingsFab.setOnClickListener {
