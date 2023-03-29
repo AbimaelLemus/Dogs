@@ -1,7 +1,7 @@
 package com.dessoft.dogs.api
 
 sealed class ApiResponseStatus<T>() {
-    class Suceess<T>(val data: T) : ApiResponseStatus<T>()
+    class Success<T>(val data: T) : ApiResponseStatus<T>()
     class Loading<T>() : ApiResponseStatus<T>()
     class Error<T>(val messageId: Int) : ApiResponseStatus<T>()
 }

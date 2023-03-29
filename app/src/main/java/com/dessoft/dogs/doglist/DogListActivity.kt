@@ -56,7 +56,7 @@ class DogListActivity : AppCompatActivity() {
                     //mostrar progressBar
                     pb.visibility = View.VISIBLE
                 }
-                is ApiResponseStatus.Suceess -> {
+                is ApiResponseStatus.Success -> {
                     //ocultar el progressBar
                     pb.visibility = View.GONE
                 }

@@ -26,5 +26,6 @@
     <string name="sign_up_error">Error SignUp </string>
     <string name="sign_in_error">error SignIn</string>
     <string name="user_already_exists">User already exists</string>
+    <string name="there_was_an_error">There was an error</string>
 
 </resources>
