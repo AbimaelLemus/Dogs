@@ -11,6 +11,7 @@ import com.dessoft.dogs.MainActivity
 import com.dessoft.dogs.R
 import com.dessoft.dogs.api.ApiResponseStatus
 import com.dessoft.dogs.databinding.ActivityLoginBinding
+import com.dessoft.dogs.model.User
 
 class LoginActivity : AppCompatActivity(), LoginFragment.LoginFragmentActions,
     SingUpFragment.SignUpFragmentActions {
@@ -38,6 +39,7 @@ class LoginActivity : AppCompatActivity(), LoginFragment.LoginFragmentActions,
 
         viewModel.user.observe(this) { user ->
             if (user != null) {
+                User.setLoggedInUser(this, user)
                 startMainActivity()
             }
         }
@@ -45,6 +47,7 @@ class LoginActivity : AppCompatActivity(), LoginFragment.LoginFragmentActions,
 
     private fun startMainActivity() {
         startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 
     private fun showErroDialog(messageId: Int) {
