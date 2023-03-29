@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.dessoft.dogs.auth.LoginActivity
 import com.dessoft.dogs.databinding.ActivityMainBinding
+import com.dessoft.dogs.doglist.DogListActivity
 import com.dessoft.dogs.model.User
 import com.dessoft.dogs.settings.SettingsActivity
 
@@ -24,6 +25,14 @@ class MainActivity : AppCompatActivity() {
             openSettings()
         }
 
+        binding.dogListFab.setOnClickListener {
+            openDogList()
+        }
+
+    }
+
+    private fun openDogList() {
+        startActivity(Intent(this, DogListActivity::class.java))
     }
 
     private fun openSettings() {
