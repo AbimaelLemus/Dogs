@@ -6,15 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.dessoft.dogs.R
 import com.dessoft.dogs.databinding.FragmentLoginBinding
+import com.dessoft.dogs.utils.isValidEmail
 
 class LoginFragment : Fragment() {
 
     interface LoginFragmentActions {
         fun onRegisterButtonClick()
+        fun onLoginFieldsValidated(email: String, password: String)
     }
 
     private lateinit var loginFragmentActions: LoginFragmentActions
+    private lateinit var binding: FragmentLoginBinding
 
     /*
     * cuando el fragment se une al activity le pasa un context y ese contexto lo ocupamos como esta en el interface */
@@ -31,12 +35,38 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentLoginBinding.inflate(inflater)
+        binding = FragmentLoginBinding.inflate(inflater)
 
         binding.loginRegisterButton.setOnClickListener {
             loginFragmentActions.onRegisterButtonClick()
         }
 
+        binding.loginButton.setOnClickListener {
+            validateFields()
+        }
+
         return binding.root
+    }
+
+
+    private fun validateFields() {
+        binding.emailInput.error = ""
+        binding.passwordInput.error = ""
+
+        val email = binding.emailEdit.text.toString().trim()
+        if (!isValidEmail(email)) {
+            binding.emailInput.error = getString(R.string.email_is_no_valid)
+            return
+        }
+
+        val password = binding.passwordEdit.text.toString().trim()
+        if (password.isEmpty()) {
+            binding.passwordInput.error = getString(R.string.password_is_not_valid)
+            return
+        }
+
+        loginFragmentActions.onLoginFieldsValidated(email, password)
+
+
     }
 }

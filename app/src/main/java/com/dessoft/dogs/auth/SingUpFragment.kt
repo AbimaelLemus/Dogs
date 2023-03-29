@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.dessoft.dogs.R
 import com.dessoft.dogs.databinding.FragmentSingUpBinding
+import com.dessoft.dogs.utils.isValidEmail
 
 class SingUpFragment : Fragment() {
 
@@ -77,10 +78,5 @@ class SingUpFragment : Fragment() {
 
     }
 
-    private fun isValidEmail(email: String?): Boolean {
-        return !email.isNullOrEmpty()
-                &&
-                Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    }
 
 }

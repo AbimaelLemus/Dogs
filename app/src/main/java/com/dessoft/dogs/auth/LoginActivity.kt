@@ -61,6 +61,10 @@ class LoginActivity : AppCompatActivity(), LoginFragment.LoginFragmentActions,
             .navigate(LoginFragmentDirections.actionLoginFragmentToSingUpFragment())
     }
 
+    override fun onLoginFieldsValidated(email: String, password: String) {
+        viewModel.login(email, password)
+    }
+
     override fun onSignUpFieldsValidated(
         email: String,
         password: String,
@@ -68,4 +72,6 @@ class LoginActivity : AppCompatActivity(), LoginFragment.LoginFragmentActions,
     ) {
         viewModel.singUp(email, password, passwordConfirmation)
     }
+
+
 }
