@@ -8,15 +8,24 @@ import com.dessoft.dogs.api.dto.DogDTOMapper
 import com.dessoft.dogs.api.makeNetworkCall
 import com.dessoft.dogs.model.Dog
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 
 class DogRepository {
 
     suspend fun getDogCollection(): ApiResponseStatus<List<Dog>> {
         return withContext(Dispatchers.IO) {
-            //como esta en una corroutina, primero se va a llamar allDogs y luego userDogs
+            /**como esta en una corroutina, primero se va a llamar allDogs y luego userDogs
             val allDogsListResponse = downloadDogs()
             val userDogsListResponse = getUserDogs()
+            por ejemplo si el de all tarda 5s y el user 3s, en total serian 8s, para optimizarlo
+            se usan los deferred, lo que hace es que no va esperar los 8s, sino que se van a
+            ejecutar al mismo tiempo, y por mucho va a tardar 5s*/
+            val allDogsListDeferred = async { downloadDogs() }
+            val userDogsListDeferred = async { getUserDogs() }
+
+            val allDogsListResponse = allDogsListDeferred.await()
+            val userDogsListResponse = userDogsListDeferred.await()
 
             when {
                 allDogsListResponse is ApiResponseStatus.Error -> {
