@@ -53,7 +53,7 @@ class DogRepository {
                     "", "", "", "", "", ""
                 )
             }
-        }
+        }.sorted()
     }
 
     private suspend fun downloadDogs(): ApiResponseStatus<List<Dog>> = makeNetworkCall {
