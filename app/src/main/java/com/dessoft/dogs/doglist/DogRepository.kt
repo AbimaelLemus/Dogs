@@ -26,6 +26,12 @@ class DogRepository {
 
     }
 
+    suspend fun getUserDogs(): ApiResponseStatus<List<Dog>> = makeNetworkCall {
+        val dogListApiResponse = retrofitService.getUserDogs()
+        val dogDTOList = dogListApiResponse.data.dogs
+        val dogDTOMapper = DogDTOMapper()
+        dogDTOMapper.fromDogDTOListToDogDomainList(dogDTOList)
+    }
 
     private fun getFakeDogs(): MutableList<Dog> {
         val dogList = mutableListOf<Dog>()
