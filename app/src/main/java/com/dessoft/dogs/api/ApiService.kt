@@ -39,7 +39,7 @@ interface ApiService {
 
     //como no se puede pasar el token directamente y esta en la clase user,
     // y dicha clase ocupa un acticity, para ello se ocupa un interceptor
-    @Headers("${ApiServiceInterceptor.NEEDS_AUTH_HEADER_KEY} = true")
+    @Headers("${ApiServiceInterceptor.NEEDS_AUTH_HEADER_KEY}: true")
     @POST(ADD_DOG_USER_URL)
     suspend fun addDogToUser(@Body addDogToUserDTO: AddDogToUserDTO): DefaultResponse
 }

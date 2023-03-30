@@ -30,5 +30,6 @@
     <string name="wrong_user_or_password">Wrong user or password</string>
     <string name="cDescription">This is a content description</string>
     <string name="logout">Logout</string>
+    <string name="error_adding_dog">There was an error adding dog to collections</string>
 
 </resources>

@@ -1,10 +1,11 @@
 package com.dessoft.dogs.doglist
 
-import com.dessoft.dogs.model.Dog
 import com.dessoft.dogs.api.ApiResponseStatus
 import com.dessoft.dogs.api.DogsApi.retrofitService
+import com.dessoft.dogs.api.dto.AddDogToUserDTO
 import com.dessoft.dogs.api.dto.DogDTOMapper
 import com.dessoft.dogs.api.makeNetworkCall
+import com.dessoft.dogs.model.Dog
 
 class DogRepository {
 
@@ -13,6 +14,16 @@ class DogRepository {
         val dogDTOList = dogListApiResponse.data.dogs
         val dogDTOMapper = DogDTOMapper()
         dogDTOMapper.fromDogDTOListToDogDomainList(dogDTOList)
+    }
+
+    suspend fun addDogToUser(dogId: Long): ApiResponseStatus<Any> = makeNetworkCall {
+        val addDogToUserDTO = AddDogToUserDTO(dogId)
+        val defaultResponse = retrofitService.addDogToUser(addDogToUserDTO)
+
+        if (!defaultResponse.isSuccess) {
+            throw Exception(defaultResponse.message)
+        }
+
     }
 
 
