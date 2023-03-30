@@ -1,13 +1,16 @@
 package com.dessoft.dogs.doglist
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.dessoft.dogs.model.Dog
+import com.dessoft.dogs.R
 import com.dessoft.dogs.databinding.DogListItemBinding
+import com.dessoft.dogs.model.Dog
 
 class DogAdapter : ListAdapter<Dog, DogAdapter.DogViewHolder>(DiffCallback) {
 
@@ -53,18 +56,40 @@ class DogAdapter : ListAdapter<Dog, DogAdapter.DogViewHolder>(DiffCallback) {
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(dog: Dog) {
-            binding.dogListItemLayout.setOnClickListener {
-                //para invocar, y si no es null entonces invoca al perro
-                onItemClickListener?.invoke(dog)
-            }
 
-            binding.dogListItemLayout.setOnLongClickListener {
-                onLongItemClickListener?.invoke(dog)
-                true
-            }
+            if (dog.inCollection) {
+                binding.dogListItemLayout.background = ContextCompat.getDrawable(
+                    binding.dogImage.context,
+                    R.drawable.dog_list_item_background_stroke
+                )
 
-            binding.dogImage.load(dog.imageUrl)
-            binding.tvNameDog.text = dog.nameEs
+                binding.tvIdDog.visibility = View.GONE
+                binding.dogImage.visibility = View.VISIBLE
+
+                binding.dogListItemLayout.setOnClickListener {
+                    //para invocar, y si no es null entonces invoca al perro
+                    onItemClickListener?.invoke(dog)
+                }
+
+                binding.dogImage.load(dog.imageUrl)
+                binding.tvNameDog.text = dog.nameEs
+                binding.tvIndexDog.visibility = View.VISIBLE
+                binding.tvIndexDog.text = dog.index.toString()
+            } else {
+                binding.tvIdDog.visibility = View.VISIBLE
+                binding.dogImage.visibility = View.GONE
+                binding.tvIndexDog.visibility = View.GONE
+                binding.tvIdDog.text = dog.index.toString()
+                binding.dogListItemLayout.background = ContextCompat.getDrawable(
+                    binding.dogImage.context,
+                    R.drawable.dog_list_item_null_background
+                )
+
+                binding.dogListItemLayout.setOnLongClickListener {
+                    onLongItemClickListener?.invoke(dog)
+                    true
+                }
+            }
         }
 
     }
