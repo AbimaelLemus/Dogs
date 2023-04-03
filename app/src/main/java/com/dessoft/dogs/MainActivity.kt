@@ -8,10 +8,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.Preview
+import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.dessoft.dogs.api.ApiServiceInterceptor
@@ -163,7 +160,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun openWholeImageActivity(photoUri:String){
+    private fun openWholeImageActivity(photoUri: String) {
         val intent = Intent(this, WholeImageActivity::class.java)
         intent.putExtra(WholeImageActivity.PHOTO_URI_KEY, photoUri)
         startActivity(intent)
@@ -193,8 +190,29 @@ class MainActivity : AppCompatActivity() {
             //select back camera as a default
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
+            val imageAnalysis = ImageAnalysis.Builder()
+                // enable the following line if RGBA output is needed.
+                // .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
+                //.setTargetResolution(Size(1280, 720))
+                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                //lo de arriba es para que solo utilice la ultima foto tomada
+                .build()
+            imageAnalysis.setAnalyzer(cameraExecutor) { imageProxy ->
+                val rotationDegrees = imageProxy.imageInfo.rotationDegrees
+                // insert your code here.
+
+                // after done, release the ImageProxy object
+                imageProxy.close()
+            }
+
             //Bind use cases to camera
-            cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
+            cameraProvider.bindToLifecycle(
+                this,
+                cameraSelector,
+                preview,
+                imageCapture,
+                imageAnalysis
+            )
 
         }, ContextCompat.getMainExecutor(this))
     }
