@@ -31,5 +31,8 @@
     <string name="cDescription">This is a content description</string>
     <string name="logout">Logout</string>
     <string name="error_adding_dog">There was an error adding dog to collections</string>
+    <string name="camera_permission_rationale_dialog_title">Aceptame por favor</string>
+    <string name="camera_permission_rationale_dialog_message">Aceta el permiso  o me da ansiedad</string>
+    <string name="camera_permission_rejected_message">You eed to accept camera permission to use camera</string>
 
 </resources>

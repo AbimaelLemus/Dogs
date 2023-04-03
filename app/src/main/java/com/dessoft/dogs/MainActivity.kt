@@ -4,11 +4,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.dessoft.dogs.api.ApiServiceInterceptor
 import com.dessoft.dogs.auth.LoginActivity
@@ -20,18 +22,18 @@ import com.dessoft.dogs.settings.SettingsActivity
 class MainActivity : AppCompatActivity() {
 
     private val TAG = MainActivity::class.java.simpleName
+    private lateinit var binding: ActivityMainBinding
 
     val requestPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (isGranted) {
-                // openCamera()
-                Log.i(TAG, "requestPermissionLauncher")
+                startCamera()
             } else {
                 Toast.makeText(
                     this,
-                    "You eed to accept camera permission to use camera",
+                    getString(R.string.camera_permission_rejected_message),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -40,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val user = User.getLoggedInUser(this)
@@ -71,8 +73,7 @@ class MainActivity : AppCompatActivity() {
                     this,
                     android.Manifest.permission.CAMERA
                 ) == PackageManager.PERMISSION_GRANTED -> {
-                    // openCamera()
-                    Log.d(TAG, "requestCameraPermission: ")
+                    startCamera()
                 }
                 shouldShowRequestPermissionRationale(
                     android.Manifest.permission.CAMERA
@@ -83,8 +84,8 @@ class MainActivity : AppCompatActivity() {
                     // "cancel" or "no thanks" button that lets the user continue
                     // using your app without granting the permission.
                     AlertDialog.Builder(this)
-                        .setTitle("Aceptame por favor")
-                        .setMessage("Aceta el permiso  o me da ansiedad")
+                        .setTitle(getString(R.string.camera_permission_rationale_dialog_title))
+                        .setMessage(getString(R.string.camera_permission_rationale_dialog_message))
                         .setPositiveButton(android.R.string.ok) { _, _ ->
                             requestPermissionLauncher.launch(
                                 android.Manifest.permission.CAMERA
@@ -103,9 +104,28 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         } else {
-            // openCamera()
+            startCamera()
         }
 
+    }
+
+    private fun startCamera() {
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+        cameraProviderFuture.addListener({
+            //Used to bind to lifecycle of cameras to the lifecycle owner
+            val cameraProvider = cameraProviderFuture.get()
+
+            //preview
+            val preview = Preview.Builder().build()
+            preview.setSurfaceProvider(binding.pvCamera.surfaceProvider)
+
+            //select back camera as a default
+            val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+
+            //Bind use cases to camera
+            cameraProvider.bindToLifecycle(this, cameraSelector, preview)
+
+        }, ContextCompat.getMainExecutor(this))
     }
 
     private fun openDogList() {

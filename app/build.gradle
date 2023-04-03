@@ -69,4 +69,10 @@ dependencies {
     /*Coil es el unico que da soporte para jetpack compose*/
     implementation 'io.coil-kt:coil:1.4.0'
 
+    /*camera
+    * https://developer.android.com/training/camerax/architecture*/
+    implementation 'androidx.camera:camera-camera2:1.2.2'
+    implementation 'androidx.camera:camera-lifecycle:1.2.2'
+    implementation 'androidx.camera:camera-view:1.2.2'
+
 }
