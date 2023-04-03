@@ -9,6 +9,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
@@ -18,18 +20,24 @@ import com.dessoft.dogs.databinding.ActivityMainBinding
 import com.dessoft.dogs.doglist.DogListActivity
 import com.dessoft.dogs.model.User
 import com.dessoft.dogs.settings.SettingsActivity
+import java.io.File
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
 
     private val TAG = MainActivity::class.java.simpleName
     private lateinit var binding: ActivityMainBinding
+    private lateinit var imageCapture: ImageCapture
+    private lateinit var cameraExecutor: ExecutorService
+    private var isCameraReady = false
 
     val requestPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (isGranted) {
-                startCamera()
+                setupCamera()
             } else {
                 Toast.makeText(
                     this,
@@ -62,8 +70,34 @@ class MainActivity : AppCompatActivity() {
             openDogList()
         }
 
+        binding.takePothoFab.setOnClickListener {
+            if (isCameraReady) {
+                takePhoto()
+            }
+        }
+
         requestCameraPermission()
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        //revisa si ya esta inicializado...
+        if (::cameraExecutor.isInitialized) {
+            cameraExecutor.shutdown()
+        }
+    }
+
+    private fun setupCamera() {
+        //despues de que se inicialice la camara, hace lo de adentro, para que no crashee
+        binding.pvCamera.post {
+            imageCapture = ImageCapture.Builder()
+                .setTargetRotation(binding.pvCamera.display.rotation)
+                .build()
+            cameraExecutor = Executors.newSingleThreadExecutor()
+            startCamera()
+            isCameraReady = true
+        }
     }
 
     fun requestCameraPermission() {
@@ -73,7 +107,7 @@ class MainActivity : AppCompatActivity() {
                     this,
                     android.Manifest.permission.CAMERA
                 ) == PackageManager.PERMISSION_GRANTED -> {
-                    startCamera()
+                    setupCamera()
                 }
                 shouldShowRequestPermissionRationale(
                     android.Manifest.permission.CAMERA
@@ -104,9 +138,39 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         } else {
-            startCamera()
+            setupCamera()
         }
 
+    }
+
+    private fun takePhoto() {
+        val outputFileOptions = ImageCapture.OutputFileOptions.Builder(getOutputPhotoFile()).build()
+        imageCapture.takePicture(outputFileOptions, cameraExecutor,
+            object : ImageCapture.OnImageSavedCallback {
+                override fun onError(error: ImageCaptureException) {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "Error taking prhoto ${error.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+                override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                    // insert your code here.
+                }
+            })
+
+    }
+
+    private fun getOutputPhotoFile(): File {
+        val mediaDir = externalMediaDirs.firstOrNull()
+            ?.let { File(it, resources.getString(R.string.app_name) + ".jpg").apply { mkdir() } }
+
+        return if (mediaDir != null && mediaDir.exists()) {
+            mediaDir
+        } else {
+            filesDir
+        }
     }
 
     private fun startCamera() {
@@ -123,7 +187,7 @@ class MainActivity : AppCompatActivity() {
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
             //Bind use cases to camera
-            cameraProvider.bindToLifecycle(this, cameraSelector, preview)
+            cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
 
         }, ContextCompat.getMainExecutor(this))
     }
