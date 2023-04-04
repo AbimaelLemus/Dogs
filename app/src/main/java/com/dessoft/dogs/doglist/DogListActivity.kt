@@ -38,9 +38,10 @@ class DogListActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        /*//Se quita en la clase 58, porque ya no se agregaran los perros desde aca
         adapter.setLongOnItemClickListener {
             dogListViewModel.addDogToUser(it.id)
-        }
+        }*/
 
         recycler.adapter = adapter
 

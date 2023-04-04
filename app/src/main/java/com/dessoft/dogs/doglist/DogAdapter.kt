@@ -31,10 +31,11 @@ class DogAdapter : ListAdapter<Dog, DogAdapter.DogViewHolder>(DiffCallback) {
         this.onItemClickListener = onItemClickListener
     }
 
+    /*//Se quita en la clase 58, porque ya no se agregaran los perros desde aca
     private var onLongItemClickListener: ((Dog) -> Unit)? = null
     fun setLongOnItemClickListener(onLongItemClickListener: (Dog) -> Unit) {
         this.onLongItemClickListener = onLongItemClickListener
-    }
+    }*/
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -84,11 +85,11 @@ class DogAdapter : ListAdapter<Dog, DogAdapter.DogViewHolder>(DiffCallback) {
                     binding.dogImage.context,
                     R.drawable.dog_list_item_null_background
                 )
-
+                /*//Se quita en la clase 58, porque ya no se agregaran los perros desde aca
                 binding.dogListItemLayout.setOnLongClickListener {
                     onLongItemClickListener?.invoke(dog)
                     true
-                }
+                }*/
             }
         }
 

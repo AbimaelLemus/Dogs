@@ -1,4 +1,4 @@
-package com.dessoft.dogs
+package com.dessoft.dogs.dogdetail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,7 +9,7 @@ import com.dessoft.dogs.doglist.DogRepository
 import com.dessoft.dogs.model.Dog
 import kotlinx.coroutines.launch
 
-class DogListViewModel : ViewModel() {
+class DogDetailViewModel : ViewModel() {
 
     private val _dogList = MutableLiveData<List<Dog>>()
 
@@ -26,23 +26,15 @@ class DogListViewModel : ViewModel() {
 
     private val dogRepository = DogRepository()
 
-    init {
-        getDogCollection()
-    }
-
-    private fun getDogCollection() {
+    fun addDogToUser(dogId: Long) {
         viewModelScope.launch {
             _status.value = ApiResponseStatus.Loading()
-            handleResponseStatus(dogRepository.getDogCollection())
+            handleAddDogToUserResponseStatus(dogRepository.addDogToUser(dogId))
         }
     }
 
-    @Suppress("UNCHECKED_CAST")
-    private fun handleResponseStatus(apiResponseStatus: ApiResponseStatus<List<Dog>>) {
-        if (apiResponseStatus is ApiResponseStatus.Success) {
-            _dogList.value = apiResponseStatus.data!!
-        }
-        _status.value = apiResponseStatus as ApiResponseStatus<Any>
+    private fun handleAddDogToUserResponseStatus(apiResponseStatus: ApiResponseStatus<Any>) {
+        _status.value = apiResponseStatus
     }
 
 }
