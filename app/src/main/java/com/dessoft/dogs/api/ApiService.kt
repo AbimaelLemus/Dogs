@@ -5,15 +5,13 @@ import com.dessoft.dogs.api.dto.LoginDTO
 import com.dessoft.dogs.api.dto.SignUpDTO
 import com.dessoft.dogs.api.responses.AuthApiResponse
 import com.dessoft.dogs.api.responses.DefaultResponse
+import com.dessoft.dogs.api.responses.DogApiResponse
 import com.dessoft.dogs.api.responses.DogListApiResponse
 import com.dessoft.dogs.utils.*
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.POST
+import retrofit2.http.*
 
 //sirve tambien para que los request solo sirvan si el usuario esta logueado
 private val okHttpClient = OkHttpClient
@@ -47,6 +45,10 @@ interface ApiService {
     @Headers("${ApiServiceInterceptor.NEEDS_AUTH_HEADER_KEY}: true")
     @GET(GET_USER_DOGS_URL)
     suspend fun getUserDogs(): DogListApiResponse
+
+    @Headers("${ApiServiceInterceptor.NEEDS_AUTH_HEADER_KEY}: true")
+    @GET(GET_DOG_BY_ML_ID_URL)
+    suspend fun getDogByMlId(@Query("ml_id") mlId: String): DogApiResponse
 }
 
 object DogsApi {

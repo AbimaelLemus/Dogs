@@ -1,22 +1,34 @@
-package com.dessoft.dogs
+package com.dessoft.dogs.main
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import com.dessoft.dogs.R
+import com.dessoft.dogs.WholeImageActivity
+import com.dessoft.dogs.api.ApiResponseStatus
 import com.dessoft.dogs.api.ApiServiceInterceptor
 import com.dessoft.dogs.auth.LoginActivity
 import com.dessoft.dogs.databinding.ActivityMainBinding
+import com.dessoft.dogs.dogdetail.DogDetailActivity
 import com.dessoft.dogs.doglist.DogListActivity
+import com.dessoft.dogs.model.Dog
 import com.dessoft.dogs.model.User
 import com.dessoft.dogs.settings.SettingsActivity
+import com.dessoft.dogs.utils.LABEL_PATH
+import com.dessoft.dogs.utils.MODEL_PATH
+import com.hackaprende.dogedex.machinelearning.Classifier
+import org.tensorflow.lite.support.common.FileUtil
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -28,8 +40,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var imageCapture: ImageCapture
     private lateinit var cameraExecutor: ExecutorService
     private var isCameraReady = false
+    private lateinit var classifier: Classifier
+    private val viewModel: MainViewModel by viewModels()
 
-    val requestPermissionLauncher =
+    private val requestPermissionLauncher =
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
@@ -73,8 +87,46 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        viewModel.status.observe(this) { status ->
+            when (status) {
+                is ApiResponseStatus.Error -> {
+                    //mostrar Toast Y ocultar el progressBar
+                    binding.pgMainActivity.visibility = View.GONE
+                    Toast.makeText(this, status.messageId, Toast.LENGTH_LONG).show()
+                }
+                is ApiResponseStatus.Loading -> {
+                    //mostrar progressBar
+                    binding.pgMainActivity.visibility = View.VISIBLE
+                }
+                is ApiResponseStatus.Success -> {
+                    //ocultar el progressBar
+                    binding.pgMainActivity.visibility = View.GONE
+                }
+            }
+        }
+
+        viewModel.dog.observe(this) { dog ->
+            if (dog != null) {
+                openDogDetailActivity(dog)
+            }
+        }
+
         requestCameraPermission()
 
+    }
+
+    private fun openDogDetailActivity(dog: Dog) {
+        val intent = Intent(this, DogDetailActivity::class.java)
+        intent.putExtra(DogDetailActivity.DOG_KEY, dog)
+        startActivity(intent)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        classifier = Classifier(
+            FileUtil.loadMappedFile(this@MainActivity, MODEL_PATH),
+            FileUtil.loadLabels(this@MainActivity, LABEL_PATH)
+        )
     }
 
     override fun onDestroy() {
@@ -97,7 +149,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun requestCameraPermission() {
+    private fun requestCameraPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             when {
                 ContextCompat.checkSelfPermission(
@@ -154,7 +206,10 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                     val photoUri = outputFileResults.savedUri
-                    openWholeImageActivity(photoUri.toString())
+                    val bitmap = BitmapFactory.decodeFile(photoUri?.path)
+                    val dogClassifier = classifier.recognizeImage(bitmap).first()
+                    viewModel.getDogByMlId(dogClassifier.id)
+                    //openWholeImageActivity(photoUri.toString())
                 }
             })
 

@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import com.dessoft.dogs.MainActivity
+import com.dessoft.dogs.main.MainActivity
 import com.dessoft.dogs.R
 import com.dessoft.dogs.api.ApiResponseStatus
 import com.dessoft.dogs.databinding.ActivityLoginBinding
