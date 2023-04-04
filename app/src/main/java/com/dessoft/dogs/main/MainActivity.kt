@@ -1,8 +1,9 @@
 package com.dessoft.dogs.main
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
+import android.graphics.*
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -22,6 +23,7 @@ import com.dessoft.dogs.auth.LoginActivity
 import com.dessoft.dogs.databinding.ActivityMainBinding
 import com.dessoft.dogs.dogdetail.DogDetailActivity
 import com.dessoft.dogs.doglist.DogListActivity
+import com.dessoft.dogs.machinelearning.DogRecognition
 import com.dessoft.dogs.model.Dog
 import com.dessoft.dogs.model.User
 import com.dessoft.dogs.settings.SettingsActivity
@@ -29,6 +31,7 @@ import com.dessoft.dogs.utils.LABEL_PATH
 import com.dessoft.dogs.utils.MODEL_PATH
 import com.hackaprende.dogedex.machinelearning.Classifier
 import org.tensorflow.lite.support.common.FileUtil
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -81,11 +84,12 @@ class MainActivity : AppCompatActivity() {
             openDogList()
         }
 
-        binding.takePothoFab.setOnClickListener {
+        //se deja de utilizar desde la clase 57, tambien se puede quitar el metodo takePhoto()
+        /*binding.takePothoFab.setOnClickListener {
             if (isCameraReady) {
                 takePhoto()
             }
-        }
+        }*/
 
         viewModel.status.observe(this) { status ->
             when (status) {
@@ -205,10 +209,13 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                    /*//estas lineas ya no se ocupan, desde la clase 57
                     val photoUri = outputFileResults.savedUri
                     val bitmap = BitmapFactory.decodeFile(photoUri?.path)
                     val dogClassifier = classifier.recognizeImage(bitmap).first()
-                    viewModel.getDogByMlId(dogClassifier.id)
+                    viewModel.getDogByMlId(dogClassifier.id)*/
+
+                    //lo de abajo abria el un WholeImageActivity, sin procesar la imagen, se quito en la clase 56
                     //openWholeImageActivity(photoUri.toString())
                 }
             })
@@ -255,7 +262,11 @@ class MainActivity : AppCompatActivity() {
             imageAnalysis.setAnalyzer(cameraExecutor) { imageProxy ->
                 val rotationDegrees = imageProxy.imageInfo.rotationDegrees
                 // insert your code here.
-
+                val bitmap = convertImageProxyToBitmap(imageProxy)
+                if (bitmap != null) {
+                    val dogRecognition = classifier.recognizeImage(bitmap).first()
+                    enableTakePhotoButton(dogRecognition)
+                }
                 // after done, release the ImageProxy object
                 imageProxy.close()
             }
@@ -270,6 +281,47 @@ class MainActivity : AppCompatActivity() {
             )
 
         }, ContextCompat.getMainExecutor(this))
+    }
+
+    private fun enableTakePhotoButton(dogRecognition: DogRecognition) {
+        if (dogRecognition.confidence > 61.0) {
+            binding.takePothoFab.alpha = 1f
+            binding.takePothoFab.setOnClickListener {
+                viewModel.getDogByMlId(dogRecognition.id)
+            }
+        } else {
+            binding.takePothoFab.alpha = 0.2f
+            binding.takePothoFab.setOnClickListener { null }
+        }
+    }
+
+    @SuppressLint("UnsafeOptInUsageError")
+    private fun convertImageProxyToBitmap(imageProxy: ImageProxy): Bitmap? {
+        val image = imageProxy.image ?: return null
+
+        val yBuffer = image.planes[0].buffer // Y
+        val uBuffer = image.planes[1].buffer // U
+        val vBuffer = image.planes[2].buffer // V
+
+        val ySize = yBuffer.remaining()
+        val uSize = uBuffer.remaining()
+        val vSize = vBuffer.remaining()
+
+        val nv21 = ByteArray(ySize + uSize + vSize)
+
+        //U and V are swapped
+        yBuffer.get(nv21, 0, ySize)
+        vBuffer.get(nv21, ySize, vSize)
+        uBuffer.get(nv21, ySize + vSize, uSize)
+
+        val yuvImage = YuvImage(nv21, ImageFormat.NV21, image.width, image.height, null)
+        val out = ByteArrayOutputStream()
+        yuvImage.compressToJpeg(Rect(0, 0, yuvImage.width, yuvImage.height), 100, out)
+        val imageBytes = out.toByteArray()
+
+        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+
+
     }
 
     private fun openDogList() {
