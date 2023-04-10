@@ -1,5 +1,6 @@
 package com.dessoft.dogs.dogdetail
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,9 +17,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
 import com.dessoft.dogs.R
 import com.dessoft.dogs.model.Dog
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun DogDetailScreen() {
 
@@ -36,6 +40,15 @@ fun DogDetailScreen() {
             )
 
         DogInformation(dog)
+
+        Image(
+            modifier = Modifier
+                .width(270.dp)
+                .padding(top = 80.dp),
+            painter = rememberImagePainter(dog.imageUrl),
+            contentDescription = dog.nameEs
+        )
+
 
     }
 
