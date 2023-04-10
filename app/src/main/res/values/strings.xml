@@ -34,5 +34,6 @@
     <string name="camera_permission_rationale_dialog_title">Aceptame por favor</string>
     <string name="camera_permission_rationale_dialog_message">Aceta el permiso  o me da ansiedad</string>
     <string name="camera_permission_rejected_message">You eed to accept camera permission to use camera</string>
+    <string name="title_activity_dog_detail_compose">DogDetailComposeActivity</string>
 
 </resources>
