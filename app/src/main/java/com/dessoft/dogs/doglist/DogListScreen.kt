@@ -1,5 +1,7 @@
 package com.dessoft.dogs.doglist
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,12 +13,13 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.sharp.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -29,24 +32,60 @@ import com.dessoft.dogs.model.Dog
 
 private const val GRID_SPAN_COUNT = 3
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@ExperimentalCoilApi
 @ExperimentalMaterialApi
+@ExperimentalFoundationApi
 @Composable
-fun DogListScreen(dogList: List<Dog>, onDogClicked: (Dog) -> Unit) {
-
-    LazyVerticalGrid(columns = GridCells.Fixed(GRID_SPAN_COUNT),
-        content = {
-            items(dogList) {
-                DogGridItem(dog = it, onDogClicked = onDogClicked)
+fun DogListScreen(
+    onNavigationIconClick: () -> Unit,
+    dogList: List<Dog>,
+    onDogClicked: (Dog) -> Unit
+) {
+    Scaffold(
+        topBar = { DogListScreenTopBar(onNavigationIconClick) }
+    ) {
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(GRID_SPAN_COUNT),
+            content = {
+                items(dogList) {
+                    DogGridItem(dog = it, onDogClicked = onDogClicked)
+                }
             }
-        }
-    )
+        )
 
-    //v71 el lazy, hace lo mismo que el recycler
-    /*LazyColumn {
-        items(dogList) {
-            DogItem(dog = it, onDogClicked = onDogClicked)
-        }
-    }*/
+    }
+}
+
+//TODO(Abimael): mejorar DogGridItem y dejar como estaba el otro dogList
+
+//v71 el lazy, hace lo mismo que el recycler
+/*LazyColumn {
+    items(dogList) {
+        DogItem(dog = it, onDogClicked = onDogClicked)
+    }
+}*/
+
+@Composable
+fun DogListScreenTopBar(onClick: () -> Unit) {
+    TopAppBar(
+        title = {
+            Text(text = stringResource(id = R.string.my_dog_Collection))
+        },
+        backgroundColor = Color.White,
+        contentColor = Color.Black,
+        navigationIcon = { BackNavigationIcon(onClick) }
+    )
+}
+
+@Composable
+fun BackNavigationIcon(onClick: () -> Unit) {
+    IconButton(onClick = onClick) {
+        Icon(
+            painter = (rememberVectorPainter(image = Icons.Sharp.ArrowBack)),
+            contentDescription = null
+        )
+    }
 }
 
 @Composable

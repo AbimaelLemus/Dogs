@@ -24,6 +24,7 @@ class DogListActivity : ComponentActivity() {
             DogsTheme {
                 val doglist = viewModel.dogList
                 DogListScreen(
+                    onNavigationIconClick = ::onNavigationIconClick,
                     dogList = doglist.value,
                     onDogClicked = ::openDogDetailActivity
                 )
@@ -36,6 +37,10 @@ class DogListActivity : ComponentActivity() {
         val intent = Intent(this, DogDetailComposeActivity::class.java)
         intent.putExtra(DogDetailComposeActivity.DOG_KEY, dog)
         startActivity(intent)
+    }
+
+    private fun onNavigationIconClick() {
+        finish()
     }
 
 
