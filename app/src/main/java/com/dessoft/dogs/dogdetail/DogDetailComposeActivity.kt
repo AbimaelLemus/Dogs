@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import coil.annotation.ExperimentalCoilApi
 import com.dessoft.dogs.R
 import com.dessoft.dogs.dogdetail.ui.theme.DogsTheme
@@ -15,6 +16,8 @@ class DogDetailComposeActivity : ComponentActivity() {
         const val DOG_KEY = "dog"
         const val IS_RECOGNITION_KEY = "is_recognition"
     }
+
+    private val viewModel: DogDetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +32,10 @@ class DogDetailComposeActivity : ComponentActivity() {
         }
 
         setContent {
+            //lo del estatus se agrega en el video 68
+            val status = viewModel.status
             DogsTheme {
-                DogDetailScreen(dog = dog)
+                DogDetailScreen(dog = dog, status.value)
             }
         }
     }

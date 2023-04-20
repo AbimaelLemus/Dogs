@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -22,11 +23,12 @@ import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.dessoft.dogs.R
+import com.dessoft.dogs.api.ApiResponseStatus
 import com.dessoft.dogs.model.Dog
 
 @ExperimentalCoilApi
 @Composable
-fun DogDetailScreen(dog: Dog) {
+fun DogDetailScreen(dog: Dog, status: ApiResponseStatus<Any>? = null) {
 
     Box(
         modifier = Modifier
@@ -57,9 +59,26 @@ fun DogDetailScreen(dog: Dog) {
             )
         }
 
+        //uso de programacion reactiva
+        if (status is ApiResponseStatus.Loading) {
+            LoadingWheel()
+        }
 
     }
 
+}
+
+@Composable
+fun LoadingWheel() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator(
+            color = Color.Green
+        )
+    }
 }
 
 @Composable
@@ -199,11 +218,12 @@ fun LifeIcon() {
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_hearth_white),
-                contentDescription = null,
+                contentDescription = "null",
+                tint = Color.White,
                 modifier = Modifier
                     .width(24.dp)
                     .height(24.dp)
-                    .padding(24.dp)
+                    .padding(4.dp)
             )
         }
 

@@ -1,13 +1,11 @@
 package com.dessoft.dogs.dogdetail
 
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import coil.load
 import com.dessoft.dogs.R
-import com.dessoft.dogs.api.ApiResponseStatus
 import com.dessoft.dogs.databinding.ActivityDogDetailBinding
 import com.dessoft.dogs.model.Dog
 
@@ -39,6 +37,8 @@ class DogDetailActivity : AppCompatActivity() {
         binding.dog = dog
         binding.dogImage.load(dog.imageUrl)
 
+        /*
+        //se comenta en video 68, por la forma de usar estados con compose
         viewModel.status.observe(this) { status ->
             when (status) {
                 is ApiResponseStatus.Error -> {
@@ -56,7 +56,7 @@ class DogDetailActivity : AppCompatActivity() {
                     finish()
                 }
             }
-        }
+        }*/
 
         binding.closeButton.setOnClickListener {
             if (isRecognition) {
