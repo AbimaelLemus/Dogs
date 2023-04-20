@@ -5,14 +5,15 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.material.ExperimentalMaterialApi
 import coil.annotation.ExperimentalCoilApi
 import com.dessoft.dogs.DogListViewModel
 import com.dessoft.dogs.dogdetail.DogDetailComposeActivity
 import com.dessoft.dogs.dogdetail.ui.theme.DogsTheme
 import com.dessoft.dogs.model.Dog
 
-private const val GRID_SPAN_COUNT = 3
 
+@ExperimentalMaterialApi
 @ExperimentalCoilApi
 class DogListActivity : ComponentActivity() {
 

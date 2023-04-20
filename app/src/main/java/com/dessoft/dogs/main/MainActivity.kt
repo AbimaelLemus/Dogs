@@ -12,6 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.core.content.ContextCompat
 import coil.annotation.ExperimentalCoilApi
 import com.dessoft.dogs.R
@@ -34,6 +35,7 @@ import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
+@ExperimentalMaterialApi
 @ExperimentalCoilApi
 class MainActivity : AppCompatActivity() {
 

@@ -3,10 +3,12 @@ package com.dessoft.dogs.settings
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material.ExperimentalMaterialApi
 import com.dessoft.dogs.auth.LoginActivity
 import com.dessoft.dogs.databinding.ActivitySettingsBinding
 import com.dessoft.dogs.model.User
 
+@ExperimentalMaterialApi
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -6,6 +6,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.findNavController
 import com.dessoft.dogs.main.MainActivity
 import com.dessoft.dogs.R
@@ -13,6 +14,7 @@ import com.dessoft.dogs.api.ApiResponseStatus
 import com.dessoft.dogs.databinding.ActivityLoginBinding
 import com.dessoft.dogs.model.User
 
+@ExperimentalMaterialApi
 class LoginActivity : AppCompatActivity(), LoginFragment.LoginFragmentActions,
     SingUpFragment.SignUpFragmentActions {
 
