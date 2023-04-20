@@ -21,7 +21,7 @@ class DogDetailViewModel : ViewModel() {
     //lo de estatus sirve para controlar los estados de la app, al igual que la clase ApiResponseStatus
     //private val _status = MutableLiveData<ApiResponseStatus<Any>>()
     // con compose el mutable se usa de la siguiente manera
-    var status = mutableStateOf<ApiResponseStatus<Any>?>(ApiResponseStatus.Loading())
+    var status = mutableStateOf<ApiResponseStatus<Any>?>(null)
         private set
     //encapsulamiento
     //lo de abajo ya no se usa con compose, v68

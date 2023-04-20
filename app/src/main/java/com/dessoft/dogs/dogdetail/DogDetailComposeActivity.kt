@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import coil.annotation.ExperimentalCoilApi
 import com.dessoft.dogs.R
+import com.dessoft.dogs.api.ApiResponseStatus
 import com.dessoft.dogs.dogdetail.ui.theme.DogsTheme
 import com.dessoft.dogs.model.Dog
 
@@ -34,9 +35,29 @@ class DogDetailComposeActivity : ComponentActivity() {
         setContent {
             //lo del estatus se agrega en el video 68
             val status = viewModel.status
-            DogsTheme {
-                DogDetailScreen(dog = dog, status.value)
+
+            if (status.value is ApiResponseStatus.Success) {
+                finish()
+            } else {
+                DogsTheme {
+                    DogDetailScreen(
+                        dog = dog,
+                        status = status.value,
+                        onButtonClicked = {
+                            onButtonClicked(dog.id, isRecognition)
+                        }
+                    )
+                }
             }
         }
     }
+
+    private fun onButtonClicked(dogId: Long, isRecognition: Boolean) {
+        if (isRecognition) {
+            viewModel.addDogToUser(dogId)
+        } else {
+            finish()
+        }
+    }
+
 }

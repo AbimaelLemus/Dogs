@@ -28,7 +28,11 @@ import com.dessoft.dogs.model.Dog
 
 @ExperimentalCoilApi
 @Composable
-fun DogDetailScreen(dog: Dog, status: ApiResponseStatus<Any>? = null) {
+fun DogDetailScreen(
+    dog: Dog,
+    status: ApiResponseStatus<Any>? = null,
+    onButtonClicked: () -> Unit
+) {
 
     Box(
         modifier = Modifier
@@ -52,7 +56,7 @@ fun DogDetailScreen(dog: Dog, status: ApiResponseStatus<Any>? = null) {
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 8.dp),
-            onClick = { }) {
+            onClick = { onButtonClicked() }) {
             Icon(
                 imageVector = Icons.Filled.Check,
                 contentDescription = ""
@@ -314,5 +318,5 @@ fun DogDetailScreenPreview() {
             "5", "6", false
         )
 
-    DogDetailScreen(dog = dog)
+    DogDetailScreen(dog = dog, onButtonClicked = {})
 }
