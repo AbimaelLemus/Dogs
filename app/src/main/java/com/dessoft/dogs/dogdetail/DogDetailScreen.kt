@@ -24,22 +24,17 @@ import coil.compose.rememberImagePainter
 import com.dessoft.dogs.R
 import com.dessoft.dogs.model.Dog
 
-@OptIn(ExperimentalCoilApi::class)
+@ExperimentalCoilApi
 @Composable
-fun DogDetailScreen() {
+fun DogDetailScreen(dog: Dog) {
 
     Box(
         modifier = Modifier
+            .fillMaxSize()
             .background(colorResource(id = R.color.secondary_background))
             .padding(start = 8.dp, end = 8.dp, bottom = 16.dp),
         contentAlignment = Alignment.TopCenter
     ) {
-        val dog =
-            Dog(
-                1L, 20, "Bilco", "Bilco", "Herding", "70",
-                "75", "", "10-15", "Friendly, playful", "Amigable, juguetón",
-                "5", "6", false
-            )
 
         DogInformation(dog)
 
@@ -291,5 +286,13 @@ private fun DogDateColumn(
 @Preview
 @Composable
 fun DogDetailScreenPreview() {
-    DogDetailScreen()
+
+    val dog =
+        Dog(
+            1L, 20, "Bilco", "Bilco", "Herding", "70",
+            "75", "", "10-15", "Friendly, playful", "Amigable, juguetón",
+            "5", "6", false
+        )
+
+    DogDetailScreen(dog = dog)
 }

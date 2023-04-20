@@ -13,13 +13,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import coil.annotation.ExperimentalCoilApi
 import com.dessoft.dogs.R
 import com.dessoft.dogs.WholeImageActivity
 import com.dessoft.dogs.api.ApiResponseStatus
 import com.dessoft.dogs.api.ApiServiceInterceptor
 import com.dessoft.dogs.auth.LoginActivity
 import com.dessoft.dogs.databinding.ActivityMainBinding
-import com.dessoft.dogs.dogdetail.DogDetailActivity
+import com.dessoft.dogs.dogdetail.DogDetailComposeActivity
 import com.dessoft.dogs.doglist.DogListActivity
 import com.dessoft.dogs.machinelearning.DogRecognition
 import com.dessoft.dogs.model.Dog
@@ -33,6 +34,7 @@ import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
+@ExperimentalCoilApi
 class MainActivity : AppCompatActivity() {
 
     private val TAG = MainActivity::class.java.simpleName
@@ -121,9 +123,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openDogDetailActivity(dog: Dog) {
-        val intent = Intent(this, DogDetailActivity::class.java)
-        intent.putExtra(DogDetailActivity.DOG_KEY, dog)
-        intent.putExtra(DogDetailActivity.IS_RECOGNITION_KEY, true)
+        val intent = Intent(this, DogDetailComposeActivity::class.java)
+        intent.putExtra(DogDetailComposeActivity.DOG_KEY, dog)
+        intent.putExtra(DogDetailComposeActivity.IS_RECOGNITION_KEY, true)
         startActivity(intent)
     }
 
