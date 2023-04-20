@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import coil.annotation.ExperimentalCoilApi
 import com.dessoft.dogs.DogListViewModel
@@ -13,6 +14,7 @@ import com.dessoft.dogs.dogdetail.ui.theme.DogsTheme
 import com.dessoft.dogs.model.Dog
 
 
+@ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @ExperimentalCoilApi
 class DogListActivity : ComponentActivity() {
@@ -21,15 +23,22 @@ class DogListActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val status = viewModel.status
             DogsTheme {
                 val doglist = viewModel.dogList
                 DogListScreen(
                     onNavigationIconClick = ::onNavigationIconClick,
                     dogList = doglist.value,
-                    onDogClicked = ::openDogDetailActivity
+                    onDogClicked = ::openDogDetailActivity,
+                    status = status.value,
+                    onErrorDialogDismiss = ::resetApiResponseStatus
                 )
             }
         }
+    }
+
+    private fun resetApiResponseStatus() {
+        viewModel.resetApiResponseStatus()
     }
 
     private fun openDogDetailActivity(dog: Dog) {

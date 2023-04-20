@@ -46,4 +46,8 @@ class DogListViewModel : ViewModel() {
         status.value = apiResponseStatus as ApiResponseStatus<Any>
     }
 
+    fun resetApiResponseStatus() {
+        status.value = null
+    }
+
 }

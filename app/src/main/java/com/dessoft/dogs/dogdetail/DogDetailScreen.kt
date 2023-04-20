@@ -24,6 +24,8 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.dessoft.dogs.R
 import com.dessoft.dogs.api.ApiResponseStatus
+import com.dessoft.dogs.composables.ErrorDialog
+import com.dessoft.dogs.composables.LoadingWheel
 import com.dessoft.dogs.model.Dog
 
 @ExperimentalCoilApi
@@ -68,45 +70,11 @@ fun DogDetailScreen(
         if (status is ApiResponseStatus.Loading) {
             LoadingWheel()
         } else if (status is ApiResponseStatus.Error) {
-            ErrorDialog(status = status, onErrorDialogDismiss)
+            ErrorDialog(messageId = status.messageId, onErrorDialogDismiss)
         }
 
     }
 
-}
-
-@Composable
-fun LoadingWheel() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        CircularProgressIndicator(
-            color = Color.Green
-        )
-    }
-}
-
-@Composable
-fun ErrorDialog(
-    status: ApiResponseStatus.Error<Any>,
-    onDialogDismiss: () -> Unit,
-) {
-    AlertDialog(
-        onDismissRequest = {},
-        title = {
-            Text(stringResource(id = R.string.error_dialog_title))
-        },
-        text = {
-            Text(stringResource(id = status.messageId))
-        },
-        confirmButton = {
-            Button(onClick = { onDialogDismiss() }) {
-                Text(stringResource(id = R.string.try_again))
-            }
-        }
-    )
 }
 
 @Composable

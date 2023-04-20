@@ -28,6 +28,9 @@ import androidx.compose.ui.unit.sp
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.dessoft.dogs.R
+import com.dessoft.dogs.api.ApiResponseStatus
+import com.dessoft.dogs.composables.ErrorDialog
+import com.dessoft.dogs.composables.LoadingWheel
 import com.dessoft.dogs.model.Dog
 
 private const val GRID_SPAN_COUNT = 3
@@ -40,7 +43,9 @@ private const val GRID_SPAN_COUNT = 3
 fun DogListScreen(
     onNavigationIconClick: () -> Unit,
     dogList: List<Dog>,
-    onDogClicked: (Dog) -> Unit
+    onDogClicked: (Dog) -> Unit,
+    status: ApiResponseStatus<Any>? = null,
+    onErrorDialogDismiss: () -> Unit,
 ) {
     Scaffold(
         topBar = { DogListScreenTopBar(onNavigationIconClick) }
@@ -53,8 +58,15 @@ fun DogListScreen(
                 }
             }
         )
-
     }
+
+    //uso de programacion reactiva
+    if (status is ApiResponseStatus.Loading) {
+        LoadingWheel()
+    } else if (status is ApiResponseStatus.Error) {
+        ErrorDialog(messageId = status.messageId, onErrorDialogDismiss)
+    }
+
 }
 
 //TODO(Abimael): mejorar DogGridItem y dejar como estaba el otro dogList
