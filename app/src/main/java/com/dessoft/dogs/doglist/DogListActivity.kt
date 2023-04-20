@@ -2,47 +2,66 @@ package com.dessoft.dogs.doglist
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
 import coil.annotation.ExperimentalCoilApi
 import com.dessoft.dogs.DogListViewModel
-import com.dessoft.dogs.api.ApiResponseStatus
-import com.dessoft.dogs.databinding.ActivityDogListBinding
 import com.dessoft.dogs.dogdetail.DogDetailComposeActivity
+import com.dessoft.dogs.dogdetail.ui.theme.DogsTheme
+import com.dessoft.dogs.model.Dog
 
 private const val GRID_SPAN_COUNT = 3
 
 @ExperimentalCoilApi
-class DogListActivity : AppCompatActivity() {
+class DogListActivity : ComponentActivity() {
 
-    private val dogListViewModel: DogListViewModel by viewModels()
+    private val viewModel: DogListViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityDogListBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        val pb = binding.pbDogList
-
-        val recycler = binding.rvDogRecycler
-        //recycler.layoutManager = LinearLayoutManager(this)
-        recycler.layoutManager = GridLayoutManager(this, GRID_SPAN_COUNT)
-
-        val adapter = DogAdapter()
-
-        adapter.setOnItemClickListener {
-            //pasar el dog a dogDetailActivity
-            val intent = Intent(this, DogDetailComposeActivity::class.java)
-            intent.putExtra(DogDetailComposeActivity.DOG_KEY, it)
-            startActivity(intent)
+        setContent {
+            DogsTheme {
+                val doglist = viewModel.dogList
+                DogListScreen(
+                    dogList = doglist.value,
+                    onDogClicked = ::openDogDetailActivity
+                )
+            }
         }
+    }
 
-        /*//Se quita en la clase 58, porque ya no se agregaran los perros desde aca
+    private fun openDogDetailActivity(dog: Dog) {
+        //pasar el dog a dogDetailActivity
+        val intent = Intent(this, DogDetailComposeActivity::class.java)
+        intent.putExtra(DogDetailComposeActivity.DOG_KEY, dog)
+        startActivity(intent)
+    }
+
+
+}
+
+/*val binding = ActivityDogListBinding.inflate(layoutInflater)
+setContentView(binding.root)
+
+val pb = binding.pbDogList
+
+val recycler = binding.rvDogRecycler
+//recycler.layoutManager = LinearLayoutManager(this)
+recycler.layoutManager = GridLayoutManager(this, GRID_SPAN_COUNT)
+
+val adapter = DogAdapter()
+
+adapter.setOnItemClickListener {
+    //pasar el dog a dogDetailActivity
+    val intent = Intent(this, DogDetailComposeActivity::class.java)
+    intent.putExtra(DogDetailComposeActivity.DOG_KEY, it)
+    startActivity(intent)
+}
+
+*//*//*/Se quita en la clase 58, porque ya no se agregaran los perros desde aca
         adapter.setLongOnItemClickListener {
             dogListViewModel.addDogToUser(it.id)
-        }*/
+        }*//*
 
         recycler.adapter = adapter
 
@@ -67,8 +86,4 @@ class DogListActivity : AppCompatActivity() {
                     pb.visibility = View.GONE
                 }
             }
-        }
-
-    }
-
-}
+        }*/
