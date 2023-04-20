@@ -31,7 +31,8 @@ import com.dessoft.dogs.model.Dog
 fun DogDetailScreen(
     dog: Dog,
     status: ApiResponseStatus<Any>? = null,
-    onButtonClicked: () -> Unit
+    onButtonClicked: () -> Unit,
+    onErrorDialogDismiss: () -> Unit,
 ) {
 
     Box(
@@ -66,6 +67,8 @@ fun DogDetailScreen(
         //uso de programacion reactiva
         if (status is ApiResponseStatus.Loading) {
             LoadingWheel()
+        } else if (status is ApiResponseStatus.Error) {
+            ErrorDialog(status = status, onErrorDialogDismiss)
         }
 
     }
@@ -83,6 +86,27 @@ fun LoadingWheel() {
             color = Color.Green
         )
     }
+}
+
+@Composable
+fun ErrorDialog(
+    status: ApiResponseStatus.Error<Any>,
+    onDialogDismiss: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = {},
+        title = {
+            Text(stringResource(id = R.string.error_dialog_title))
+        },
+        text = {
+            Text(stringResource(id = status.messageId))
+        },
+        confirmButton = {
+            Button(onClick = { onDialogDismiss() }) {
+                Text(stringResource(id = R.string.try_again))
+            }
+        }
+    )
 }
 
 @Composable
@@ -318,5 +342,5 @@ fun DogDetailScreenPreview() {
             "5", "6", false
         )
 
-    DogDetailScreen(dog = dog, onButtonClicked = {})
+    DogDetailScreen(dog = dog, onButtonClicked = {}, onErrorDialogDismiss = {})
 }

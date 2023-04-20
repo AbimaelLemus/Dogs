@@ -4,11 +4,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.dessoft.dogs.R
 import com.dessoft.dogs.api.ApiResponseStatus
 import com.dessoft.dogs.doglist.DogRepository
 import com.dessoft.dogs.model.Dog
-import kotlinx.coroutines.launch
 
 class DogDetailViewModel : ViewModel() {
 
@@ -31,14 +30,19 @@ class DogDetailViewModel : ViewModel() {
     private val dogRepository = DogRepository()
 
     fun addDogToUser(dogId: Long) {
-        viewModelScope.launch {
+        /*viewModelScope.launch {
             status.value = ApiResponseStatus.Loading()
             handleAddDogToUserResponseStatus(dogRepository.addDogToUser(dogId))
-        }
+        }*/
+        status.value = ApiResponseStatus.Error(messageId = R.string.app_name)
     }
 
     private fun handleAddDogToUserResponseStatus(apiResponseStatus: ApiResponseStatus<Any>) {
         status.value = apiResponseStatus
+    }
+
+    fun resetApiResponseStatus() {
+        status.value = null
     }
 
 }
