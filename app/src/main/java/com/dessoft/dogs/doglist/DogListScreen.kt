@@ -14,12 +14,9 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.sharp.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -29,6 +26,7 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.dessoft.dogs.R
 import com.dessoft.dogs.api.ApiResponseStatus
+import com.dessoft.dogs.composables.BackNavigationIcon
 import com.dessoft.dogs.composables.ErrorDialog
 import com.dessoft.dogs.composables.LoadingWheel
 import com.dessoft.dogs.model.Dog
@@ -88,16 +86,6 @@ fun DogListScreenTopBar(onClick: () -> Unit) {
         contentColor = Color.Black,
         navigationIcon = { BackNavigationIcon(onClick) }
     )
-}
-
-@Composable
-fun BackNavigationIcon(onClick: () -> Unit) {
-    IconButton(onClick = onClick) {
-        Icon(
-            painter = (rememberVectorPainter(image = Icons.Sharp.ArrowBack)),
-            contentDescription = null
-        )
-    }
 }
 
 @Composable

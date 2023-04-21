@@ -2,22 +2,17 @@ package com.dessoft.dogs.auth
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.findNavController
 import coil.annotation.ExperimentalCoilApi
-import com.dessoft.dogs.main.MainActivity
 import com.dessoft.dogs.R
-import com.dessoft.dogs.api.ApiResponseStatus
-import com.dessoft.dogs.databinding.ActivityLoginBinding
 import com.dessoft.dogs.dogdetail.ui.theme.DogsTheme
-import com.dessoft.dogs.model.User
+import com.dessoft.dogs.main.MainActivity
 
 @ExperimentalCoilApi
 @ExperimentalFoundationApi
@@ -31,7 +26,7 @@ class LoginActivity : ComponentActivity(), LoginFragment.LoginFragmentActions,
 
         setContent {
             DogsTheme {
-                LoginScreen()
+                SingUpScreen()
             }
         }
 
