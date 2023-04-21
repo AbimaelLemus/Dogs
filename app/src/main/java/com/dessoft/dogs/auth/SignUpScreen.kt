@@ -20,17 +20,19 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.dessoft.dogs.R
-import com.dessoft.dogs.api.ApiResponseStatus
 import com.dessoft.dogs.composables.AuthField
+import com.dessoft.dogs.composables.BackNavigationIcon
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun SingUpScreen(
-    status: ApiResponseStatus<Any>? = null,
+    onNavigationIconClick: () -> Unit,
 ) {
 
     Scaffold(topBar = {
-        SignUpScreenToolbar()
+        SignUpScreenToolbar(
+            onNavigationIconClick
+        )
     }) {
         Content()
     }
@@ -101,12 +103,19 @@ private fun Content() {
 }
 
 @Composable
-fun SignUpScreenToolbar() {
+fun SignUpScreenToolbar(
+    onNavigationIconClick: () -> Unit,
+) {
     TopAppBar(
         title = {
             Text(text = stringResource(id = R.string.app_name))
         },
         backgroundColor = Color.Red,
         contentColor = Color.White,
+        navigationIcon = {
+            BackNavigationIcon {
+                onNavigationIconClick()
+            }
+        }
     )
 }

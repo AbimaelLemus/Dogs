@@ -26,7 +26,7 @@ class LoginActivity : ComponentActivity(), LoginFragment.LoginFragmentActions,
 
         setContent {
             DogsTheme {
-                SingUpScreen()
+                AuthScreen()
             }
         }
 
