@@ -3,27 +3,40 @@ package com.dessoft.dogs.auth
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.navigation.findNavController
+import coil.annotation.ExperimentalCoilApi
 import com.dessoft.dogs.main.MainActivity
 import com.dessoft.dogs.R
 import com.dessoft.dogs.api.ApiResponseStatus
 import com.dessoft.dogs.databinding.ActivityLoginBinding
+import com.dessoft.dogs.dogdetail.ui.theme.DogsTheme
 import com.dessoft.dogs.model.User
 
+@ExperimentalCoilApi
+@ExperimentalFoundationApi
 @ExperimentalMaterialApi
-class LoginActivity : AppCompatActivity(), LoginFragment.LoginFragmentActions,
+class LoginActivity : ComponentActivity(), LoginFragment.LoginFragmentActions,
     SingUpFragment.SignUpFragmentActions {
 
     private val viewModel: AuthViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
+        setContent {
+            DogsTheme {
+                LoginScreen()
+            }
+        }
+
+        /*val binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         viewModel.status.observe(this) { status ->
             when (status) {
                 is ApiResponseStatus.Error -> {
@@ -44,7 +57,7 @@ class LoginActivity : AppCompatActivity(), LoginFragment.LoginFragmentActions,
                 User.setLoggedInUser(this, user)
                 startMainActivity()
             }
-        }
+        }*/
     }
 
     private fun startMainActivity() {
