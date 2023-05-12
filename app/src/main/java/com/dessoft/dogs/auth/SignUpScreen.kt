@@ -26,6 +26,7 @@ import com.dessoft.dogs.composables.BackNavigationIcon
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun SingUpScreen(
+    onSignUpButtonClick: (email: String, password: String, passwordConfirmation: String) -> Unit,
     onNavigationIconClick: () -> Unit,
 ) {
 
@@ -34,13 +35,17 @@ fun SingUpScreen(
             onNavigationIconClick
         )
     }) {
-        Content()
+        Content(
+            onSignUpButtonClick = onSignUpButtonClick
+        )
     }
 
 }
 
 @Composable
-private fun Content() {
+private fun Content(
+    onSignUpButtonClick: (email: String, password: String, passwordConfirmation: String) -> Unit,
+) {
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     val confirmPassword = remember { mutableStateOf("") }
@@ -90,7 +95,9 @@ private fun Content() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
-            onClick = { },
+            onClick = {
+                onSignUpButtonClick(email.value, password.value, confirmPassword.value)
+            },
         ) {
             Text(
                 stringResource(id = R.string.sign_up),

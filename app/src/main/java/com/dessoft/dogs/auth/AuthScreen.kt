@@ -15,10 +15,16 @@ import com.dessoft.dogs.model.User
 @Composable
 fun AuthScreen(
     status: ApiResponseStatus<User>?,
+    onLoginButtonClick: (String, String) -> Unit,
+    onSignUpButtonClick: (email: String, password: String, passwordConfirmation: String) -> Unit,
     onErrorDialogDismiss: () -> Unit,
 ) {
     val navController = rememberNavController()
-    AuthNavHost(navController = navController)
+    AuthNavHost(
+        navController = navController,
+        onLoginButtonClick = onLoginButtonClick,
+        onSignUpButtonClick = onSignUpButtonClick
+    )
 
     //uso de programacion reactiva
     if (status is ApiResponseStatus.Loading) {
@@ -30,7 +36,9 @@ fun AuthScreen(
 
 @Composable
 private fun AuthNavHost(
-    navController: NavHostController
+    navController: NavHostController,
+    onLoginButtonClick: (String, String) -> Unit,
+    onSignUpButtonClick: (email: String, password: String, passwordConfirmation: String) -> Unit,
 ) {
     NavHost(
         navController = navController,
@@ -38,6 +46,7 @@ private fun AuthNavHost(
     ) {
         composable(route = LoginScreenDestination) {
             LoginScreen(
+                onLoginButtonClick = onLoginButtonClick,
                 onRegisterButtonClick = {
                     navController.navigate(route = SignUpScreenDestination)
                 }
@@ -45,6 +54,7 @@ private fun AuthNavHost(
         }
         composable(route = SignUpScreenDestination) {
             SingUpScreen(
+                onSignUpButtonClick = onSignUpButtonClick,
                 onNavigationIconClick = {
                     navController.navigateUp()
                 }

@@ -25,11 +25,13 @@ import com.dessoft.dogs.composables.AuthField
 @Composable
 fun LoginScreen(
     status: ApiResponseStatus<Any>? = null,
+    onLoginButtonClick: (String, String) -> Unit,
     onRegisterButtonClick: () -> Unit,
 ) {
 
     Scaffold(topBar = { LoginScreenToolbar() }) {
         Content(
+            onLoginButtonClick = onLoginButtonClick,
             onRegisterButtonClick = onRegisterButtonClick
         )
     }
@@ -38,6 +40,7 @@ fun LoginScreen(
 
 @Composable
 private fun Content(
+    onLoginButtonClick: (String, String) -> Unit,
     onRegisterButtonClick: () -> Unit,
 ) {
 
@@ -82,7 +85,7 @@ private fun Content(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp),
-            onClick = { },
+            onClick = { onLoginButtonClick(email.value, password.value) },
         ) {
             Text(
                 stringResource(id = R.string.login),

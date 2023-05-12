@@ -35,6 +35,12 @@ class LoginActivity : ComponentActivity() {
             DogsTheme {
                 AuthScreen(
                     status = status.value,
+                    onLoginButtonClick = { email, password ->
+                        viewModel.login(email, password)
+                    },
+                    onSignUpButtonClick = { email, password, passwordConfirmation ->
+                        viewModel.login(email, password)
+                    },
                     onErrorDialogDismiss = ::resetApiResponseStatus
                 )
             }
@@ -48,18 +54,6 @@ class LoginActivity : ComponentActivity() {
     private fun startMainActivity() {
         startActivity(Intent(this, MainActivity::class.java))
         finish()
-    }
-
-    override fun onLoginFieldsValidated(email: String, password: String) {
-        viewModel.login(email, password)
-    }
-
-    override fun onSignUpFieldsValidated(
-        email: String,
-        password: String,
-        passwordConfirmation: String
-    ) {
-        viewModel.singUp(email, password, passwordConfirmation)
     }
 
 
