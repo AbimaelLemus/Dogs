@@ -28,6 +28,7 @@ import com.dessoft.dogs.composables.BackNavigationIcon
 fun SingUpScreen(
     onSignUpButtonClick: (email: String, password: String, passwordConfirmation: String) -> Unit,
     onNavigationIconClick: () -> Unit,
+    authViewModel: AuthViewModel,
 ) {
 
     Scaffold(topBar = {
@@ -36,7 +37,9 @@ fun SingUpScreen(
         )
     }) {
         Content(
-            onSignUpButtonClick = onSignUpButtonClick
+            resetFieldError = { authViewModel.resetErrors() },
+            onSignUpButtonClick = onSignUpButtonClick,
+            authViewModel = authViewModel,
         )
     }
 
@@ -44,7 +47,9 @@ fun SingUpScreen(
 
 @Composable
 private fun Content(
+    resetFieldError: () -> Unit,
     onSignUpButtonClick: (email: String, password: String, passwordConfirmation: String) -> Unit,
+    authViewModel: AuthViewModel
 ) {
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
@@ -64,7 +69,9 @@ private fun Content(
             email = email.value,
             onTextChanged = {
                 email.value = it
-            }
+                resetFieldError()
+            },
+            errorMessageId = authViewModel.emailError.value
         )
 
         AuthField(
@@ -75,8 +82,10 @@ private fun Content(
             email = password.value,
             onTextChanged = {
                 password.value = it
+                resetFieldError()
             },
-            visualTransformation = PasswordVisualTransformation()
+            visualTransformation = PasswordVisualTransformation(),
+            errorMessageId = authViewModel.passwordError.value
         )
 
         AuthField(
@@ -87,8 +96,10 @@ private fun Content(
             email = confirmPassword.value,
             onTextChanged = {
                 confirmPassword.value = it
+                resetFieldError()
             },
-            visualTransformation = PasswordVisualTransformation()
+            visualTransformation = PasswordVisualTransformation(),
+            errorMessageId = authViewModel.confirmPasswordError.value,
         )
 
         Button(

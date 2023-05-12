@@ -27,6 +27,7 @@ fun LoginScreen(
     status: ApiResponseStatus<Any>? = null,
     onLoginButtonClick: (String, String) -> Unit,
     onRegisterButtonClick: () -> Unit,
+    authViewModel: AuthViewModel,
 ) {
 
     Scaffold(topBar = { LoginScreenToolbar() }) {

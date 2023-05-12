@@ -39,4 +39,6 @@
     <string name="try_again">Try again</string>
     <string name="my_dog_Collection">My dog collection</string>
 
+    <string name="password_must_not_be_empty">Password must not be empty</string>
+
 </resources>

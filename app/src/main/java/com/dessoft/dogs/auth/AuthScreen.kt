@@ -18,12 +18,14 @@ fun AuthScreen(
     onLoginButtonClick: (String, String) -> Unit,
     onSignUpButtonClick: (email: String, password: String, passwordConfirmation: String) -> Unit,
     onErrorDialogDismiss: () -> Unit,
+    authViewModel: AuthViewModel,
 ) {
     val navController = rememberNavController()
     AuthNavHost(
         navController = navController,
         onLoginButtonClick = onLoginButtonClick,
-        onSignUpButtonClick = onSignUpButtonClick
+        onSignUpButtonClick = onSignUpButtonClick,
+        authViewModel = authViewModel
     )
 
     //uso de programacion reactiva
@@ -39,6 +41,7 @@ private fun AuthNavHost(
     navController: NavHostController,
     onLoginButtonClick: (String, String) -> Unit,
     onSignUpButtonClick: (email: String, password: String, passwordConfirmation: String) -> Unit,
+    authViewModel: AuthViewModel,
 ) {
     NavHost(
         navController = navController,
@@ -49,7 +52,8 @@ private fun AuthNavHost(
                 onLoginButtonClick = onLoginButtonClick,
                 onRegisterButtonClick = {
                     navController.navigate(route = SignUpScreenDestination)
-                }
+                },
+                authViewModel = authViewModel
             )
         }
         composable(route = SignUpScreenDestination) {
@@ -57,7 +61,8 @@ private fun AuthNavHost(
                 onSignUpButtonClick = onSignUpButtonClick,
                 onNavigationIconClick = {
                     navController.navigateUp()
-                }
+                },
+                authViewModel = authViewModel,
             )
         }
     }

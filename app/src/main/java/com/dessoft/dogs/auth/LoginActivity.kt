@@ -39,9 +39,10 @@ class LoginActivity : ComponentActivity() {
                         viewModel.login(email, password)
                     },
                     onSignUpButtonClick = { email, password, passwordConfirmation ->
-                        viewModel.login(email, password)
+                        viewModel.singUp(email, password, passwordConfirmation)
                     },
-                    onErrorDialogDismiss = ::resetApiResponseStatus
+                    onErrorDialogDismiss = ::resetApiResponseStatus,
+                    authViewModel = viewModel
                 )
             }
         }
