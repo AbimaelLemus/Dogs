@@ -1,7 +1,6 @@
 package com.dessoft.dogs.auth
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dessoft.dogs.api.ApiResponseStatus
@@ -10,41 +9,37 @@ import kotlinx.coroutines.launch
 
 class AuthViewModel : ViewModel() {
 
-    private val _user = MutableLiveData<User>()
+    var user = mutableStateOf<User?>(null)
+        private set
 
-    //encapsulamiento, el livedata no se puede editar
-    val user: LiveData<User>
-        get() = _user
-
-    //lo de estatus sirve para controlar los estados de la app, al igual que la clase ApiResponseStatus
-    private val _status = MutableLiveData<ApiResponseStatus<User>>()
-
-    //encapsulamiento
-    val status: LiveData<ApiResponseStatus<User>>
-        get() = _status
+    var status = mutableStateOf<ApiResponseStatus<User>?>(null)
+        private set
 
     private val authRepository = AuthRepository()
 
-
     fun login(email: String, password: String) {
         viewModelScope.launch {
-            _status.value = ApiResponseStatus.Loading()
+            status.value = ApiResponseStatus.Loading()
             handleResponseStatus(authRepository.login(email, password))
         }
     }
 
     fun singUp(email: String, password: String, passwordConfirmation: String) {
         viewModelScope.launch {
-            _status.value = ApiResponseStatus.Loading()
+            status.value = ApiResponseStatus.Loading()
             handleResponseStatus(authRepository.signUp(email, password, passwordConfirmation))
         }
     }
 
     private fun handleResponseStatus(apiResponseStatus: ApiResponseStatus<User>) {
         if (apiResponseStatus is ApiResponseStatus.Success) {
-            _user.value = apiResponseStatus.data!!
+            user.value = apiResponseStatus.data!!
         }
-        _status.value = apiResponseStatus
+        status.value = apiResponseStatus
+    }
+
+    fun resetApiResponseStatus() {
+        status.value = null
     }
 
 }
