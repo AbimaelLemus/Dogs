@@ -4,42 +4,41 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import coil.annotation.ExperimentalCoilApi
-import com.dessoft.dogs.DogListViewModel
 import com.dessoft.dogs.dogdetail.DogDetailComposeActivity
 import com.dessoft.dogs.dogdetail.ui.theme.DogsTheme
 import com.dessoft.dogs.model.Dog
+import dagger.hilt.android.AndroidEntryPoint
 
 
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @ExperimentalCoilApi
+/*AndroidEntryPoint, es parte de la injeccion de dependencias*/
+@AndroidEntryPoint
 class DogListActivity : ComponentActivity() {
 
-    private val viewModel: DogListViewModel by viewModels()
+    // se quita en el video 86 porque hilt lo va a proveer desde el viewModel
+    //private val viewModel: DogListViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val status = viewModel.status
             DogsTheme {
-                val doglist = viewModel.dogList
                 DogListScreen(
                     onNavigationIconClick = ::onNavigationIconClick,
-                    dogList = doglist.value,
                     onDogClicked = ::openDogDetailActivity,
-                    status = status.value,
-                    onErrorDialogDismiss = ::resetApiResponseStatus
                 )
             }
         }
     }
 
+    /*
+    //Se quita en el video 86
     private fun resetApiResponseStatus() {
         viewModel.resetApiResponseStatus()
-    }
+    }*/
 
     private fun openDogDetailActivity(dog: Dog) {
         //pasar el dog a dogDetailActivity

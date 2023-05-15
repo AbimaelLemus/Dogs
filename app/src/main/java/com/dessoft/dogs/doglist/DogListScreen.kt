@@ -22,8 +22,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
+import com.dessoft.dogs.DogListViewModel
 import com.dessoft.dogs.R
 import com.dessoft.dogs.api.ApiResponseStatus
 import com.dessoft.dogs.composables.BackNavigationIcon
@@ -40,11 +42,14 @@ private const val GRID_SPAN_COUNT = 3
 @Composable
 fun DogListScreen(
     onNavigationIconClick: () -> Unit,
-    dogList: List<Dog>,
     onDogClicked: (Dog) -> Unit,
-    status: ApiResponseStatus<Any>? = null,
-    onErrorDialogDismiss: () -> Unit,
+    viewModel: DogListViewModel = hiltViewModel(),
 ) {
+    //se quitan del constructor porque el viewModel y hilt lo van a proveer
+    //Los estados de logica solo los debe de cambiar el viewModel
+    val status = viewModel.status.value
+    val dogList = viewModel.dogList.value
+
     Scaffold(
         topBar = { DogListScreenTopBar(onNavigationIconClick) }
     ) {
@@ -62,7 +67,7 @@ fun DogListScreen(
     if (status is ApiResponseStatus.Loading) {
         LoadingWheel()
     } else if (status is ApiResponseStatus.Error) {
-        ErrorDialog(messageId = status.messageId, onErrorDialogDismiss)
+        ErrorDialog(messageId = status.messageId) { viewModel.resetApiResponseStatus() }
     }
 
 }
@@ -142,7 +147,7 @@ fun DogGridItem(dog: Dog, onDogClicked: (Dog) -> Unit) {
                     .fillMaxSize()
                     .padding(16.dp),
                 textAlign = TextAlign.Center,
-                fontSize = 42.sp,
+                fontSize = 24.sp,
                 fontWeight = FontWeight.Black
             )
         }
