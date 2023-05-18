@@ -10,8 +10,10 @@ import com.dessoft.dogs.R
 import com.dessoft.dogs.api.ApiResponseStatus
 import com.dessoft.dogs.dogdetail.ui.theme.DogsTheme
 import com.dessoft.dogs.model.Dog
+import dagger.hilt.android.AndroidEntryPoint
 
 @ExperimentalCoilApi
+@AndroidEntryPoint
 class DogDetailComposeActivity : ComponentActivity() {
     companion object {
         const val DOG_KEY = "dog"

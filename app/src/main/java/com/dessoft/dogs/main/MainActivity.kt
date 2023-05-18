@@ -31,6 +31,7 @@ import com.dessoft.dogs.settings.SettingsActivity
 import com.dessoft.dogs.utils.LABEL_PATH
 import com.dessoft.dogs.utils.MODEL_PATH
 import com.hackaprende.dogedex.machinelearning.Classifier
+import dagger.hilt.android.AndroidEntryPoint
 import org.tensorflow.lite.support.common.FileUtil
 import java.io.File
 import java.util.concurrent.ExecutorService
@@ -39,6 +40,7 @@ import java.util.concurrent.Executors
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @ExperimentalCoilApi
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val TAG = MainActivity::class.java.simpleName

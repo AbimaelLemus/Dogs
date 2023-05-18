@@ -6,15 +6,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dessoft.dogs.api.ApiResponseStatus
-import com.dessoft.dogs.doglist.DogRepository
+import com.dessoft.dogs.doglist.DogTasks
 import com.dessoft.dogs.machinelearning.ClassifierRepository
 import com.dessoft.dogs.machinelearning.DogRecognition
 import com.dessoft.dogs.model.Dog
 import com.hackaprende.dogedex.machinelearning.Classifier
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.nio.MappedByteBuffer
+import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val dogRepository: DogTasks
+) : ViewModel() {
     //el _dog se puede manipular solo desde aca (viewmodel)
     private val _dog = MutableLiveData<Dog>()
 
@@ -33,8 +38,6 @@ class MainViewModel : ViewModel() {
     private val _dogRecognition = MutableLiveData<DogRecognition>()
     val dogRecognition: LiveData<DogRecognition>
         get() = _dogRecognition
-
-    private val dogRepository = DogRepository()
 
     private lateinit var classfierRepository: ClassifierRepository
 
