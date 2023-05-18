@@ -10,6 +10,7 @@ import com.dessoft.dogs.model.Dog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 
 interface DogTasks {
@@ -27,7 +28,7 @@ interface DogTasks {
 * Postd:aunque tambien se puede usar cualquiera de las dos android recomienda lo de arriba
 * */
 
-class DogRepository : DogTasks {
+class DogRepository @Inject constructor(): DogTasks {
 
     override suspend fun getDogCollection(): ApiResponseStatus<List<Dog>> {
         return withContext(Dispatchers.IO) {
