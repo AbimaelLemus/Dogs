@@ -7,7 +7,7 @@ import com.dessoft.dogs.api.dto.AddDogToUserDTO
 import com.dessoft.dogs.api.dto.DogDTOMapper
 import com.dessoft.dogs.api.makeNetworkCall
 import com.dessoft.dogs.model.Dog
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -29,11 +29,14 @@ interface DogTasks {
 * */
 
 class DogRepository @Inject constructor(
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val dispatcher: CoroutineDispatcher,
+    //en produccion es un dispatcher IO, porque corresponde a las operaciones que tenemos
+    //pero en test va a ser otro dispatcher
 ) : DogTasks {
 
     override suspend fun getDogCollection(): ApiResponseStatus<List<Dog>> {
-        return withContext(Dispatchers.IO) {
+        return withContext(dispatcher) {
             /**como esta en una corroutina, primero se va a llamar allDogs y luego userDogs
             val allDogsListResponse = downloadDogs()
             val userDogsListResponse = getUserDogs()
