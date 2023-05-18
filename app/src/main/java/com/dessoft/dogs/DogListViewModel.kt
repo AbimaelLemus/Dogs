@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dessoft.dogs.api.ApiResponseStatus
-import com.dessoft.dogs.doglist.DogRepository
+import com.dessoft.dogs.doglist.DogTasks
 import com.dessoft.dogs.model.Dog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DogListViewModel @Inject constructor(
-    private val dogRepository: DogRepository,
+    private val dogRepository: DogTasks,
 ) : ViewModel() {
 
     var dogList = mutableStateOf<List<Dog>>(listOf())

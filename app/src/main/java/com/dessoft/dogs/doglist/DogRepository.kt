@@ -10,11 +10,19 @@ import com.dessoft.dogs.model.Dog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
-class DogRepository @Inject constructor() {
 
-    suspend fun getDogCollection(): ApiResponseStatus<List<Dog>> {
+interface DogTasks {
+    //aca solo van los metodos publicos
+    suspend fun getDogCollection(): ApiResponseStatus<List<Dog>>
+    suspend fun addDogToUser(dogId: Long): ApiResponseStatus<Any>
+    suspend fun getDogByMlId(mlDogId: String): ApiResponseStatus<Dog>
+
+}
+
+class DogRepository : DogTasks {
+
+    override suspend fun getDogCollection(): ApiResponseStatus<List<Dog>> {
         return withContext(Dispatchers.IO) {
             /**como esta en una corroutina, primero se va a llamar allDogs y luego userDogs
             val allDogsListResponse = downloadDogs()
@@ -80,7 +88,7 @@ class DogRepository @Inject constructor() {
         dogDTOMapper.fromDogDTOListToDogDomainList(dogDTOList)
     }
 
-    suspend fun addDogToUser(dogId: Long): ApiResponseStatus<Any> = makeNetworkCall {
+    override suspend fun addDogToUser(dogId: Long): ApiResponseStatus<Any> = makeNetworkCall {
         val addDogToUserDTO = AddDogToUserDTO(dogId)
         val defaultResponse = retrofitService.addDogToUser(addDogToUserDTO)
 
@@ -90,7 +98,7 @@ class DogRepository @Inject constructor() {
 
     }
 
-    suspend fun getDogByMlId(mlDogId: String): ApiResponseStatus<Dog> = makeNetworkCall {
+    override suspend fun getDogByMlId(mlDogId: String): ApiResponseStatus<Dog> = makeNetworkCall {
         val response = retrofitService.getDogByMlId(mlDogId)
 
         if (!response.isSuccess) {
