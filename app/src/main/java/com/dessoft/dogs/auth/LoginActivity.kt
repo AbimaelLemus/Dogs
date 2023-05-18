@@ -11,10 +11,12 @@ import coil.annotation.ExperimentalCoilApi
 import com.dessoft.dogs.dogdetail.ui.theme.DogsTheme
 import com.dessoft.dogs.main.MainActivity
 import com.dessoft.dogs.model.User
+import dagger.hilt.android.AndroidEntryPoint
 
 @ExperimentalCoilApi
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
+@AndroidEntryPoint
 class LoginActivity : ComponentActivity() {
 
     private val viewModel: AuthViewModel by viewModels()

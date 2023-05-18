@@ -6,9 +6,14 @@ import androidx.lifecycle.viewModelScope
 import com.dessoft.dogs.R
 import com.dessoft.dogs.api.ApiResponseStatus
 import com.dessoft.dogs.model.User
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AuthViewModel : ViewModel() {
+@HiltViewModel
+class AuthViewModel @Inject constructor(
+    private val authRepository: AuthTasks
+) : ViewModel() {
 
     var user = mutableStateOf<User?>(null)
         private set
@@ -24,8 +29,6 @@ class AuthViewModel : ViewModel() {
 
     var status = mutableStateOf<ApiResponseStatus<User>?>(null)
         private set
-
-    private val authRepository = AuthRepository()
 
     fun login(email: String, password: String) {
         viewModelScope.launch {

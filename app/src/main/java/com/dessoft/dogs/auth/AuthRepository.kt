@@ -1,21 +1,43 @@
 package com.dessoft.dogs.auth
 
 import com.dessoft.dogs.api.ApiResponseStatus
-import com.dessoft.dogs.api.DogsApi
+import com.dessoft.dogs.api.ApiService
 import com.dessoft.dogs.api.dto.LoginDTO
 import com.dessoft.dogs.api.dto.SignUpDTO
 import com.dessoft.dogs.api.dto.UserDTOMapper
 import com.dessoft.dogs.api.makeNetworkCall
 import com.dessoft.dogs.model.User
+import javax.inject.Inject
 
-class AuthRepository {
 
+interface AuthTasks {
     suspend fun login(
+        email: String,
+        password: String
+    ): ApiResponseStatus<User>
+
+    suspend fun signUp(
+        email: String,
+        password: String,
+        passwordConfirmation: String
+    ): ApiResponseStatus<User>
+}
+
+/*
+* USER:hackaprende@gmail.com
+* PSW: test1234
+* */
+
+class AuthRepository @Inject constructor(
+    private val apiService: ApiService,
+) : AuthTasks {
+
+    override suspend fun login(
         email: String,
         password: String
     ): ApiResponseStatus<User> = makeNetworkCall {
         val loginDTO = LoginDTO(email, password)
-        val loginResponse = DogsApi.retrofitService.login(loginDTO)
+        val loginResponse = apiService.login(loginDTO)
 
         if (!loginResponse.isSuccess) {
             throw Exception(loginResponse.message)
@@ -26,13 +48,13 @@ class AuthRepository {
         userDTOMapper.fromUserDTOToUserDomain(userDTO)
     }
 
-    suspend fun signUp(
+    override suspend fun signUp(
         email: String,
         password: String,
         passwordConfirmation: String
     ): ApiResponseStatus<User> = makeNetworkCall {
         val signUpDTO = SignUpDTO(email, password, passwordConfirmation)
-        val signUpResponse = DogsApi.retrofitService.signUp(signUpDTO)
+        val signUpResponse = apiService.signUp(signUpDTO)
 
         if (!signUpResponse.isSuccess) {
             throw Exception(signUpResponse.message)
