@@ -20,6 +20,13 @@ interface DogTasks {
 
 }
 
+/*
+* @Binds: para implementacion de interfaces del proyecto
+* @Provides: clases de las cuales el proyecto no es dueño
+*            por ej: retrofit,
+* Postd:aunque tambien se puede usar cualquiera de las dos android recomienda lo de arriba
+* */
+
 class DogRepository : DogTasks {
 
     override suspend fun getDogCollection(): ApiResponseStatus<List<Dog>> {
