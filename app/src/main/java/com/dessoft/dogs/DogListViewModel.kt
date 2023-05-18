@@ -11,7 +11,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DogListViewModel @Inject constructor(): ViewModel() {
+class DogListViewModel @Inject constructor(
+    private val dogRepository: DogRepository,
+) : ViewModel() {
 
     var dogList = mutableStateOf<List<Dog>>(listOf())
         private set
@@ -27,8 +29,6 @@ class DogListViewModel @Inject constructor(): ViewModel() {
     //encapsulamiento, se quita en el v71
     /*val status: LiveData<ApiResponseStatus<Any>>
         get() = _status*/
-
-    private val dogRepository = DogRepository()
 
     init {
         getDogCollection()

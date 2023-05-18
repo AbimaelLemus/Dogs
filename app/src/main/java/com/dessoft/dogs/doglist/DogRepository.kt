@@ -10,8 +10,9 @@ import com.dessoft.dogs.model.Dog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class DogRepository {
+class DogRepository @Inject constructor() {
 
     suspend fun getDogCollection(): ApiResponseStatus<List<Dog>> {
         return withContext(Dispatchers.IO) {
