@@ -7,18 +7,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dessoft.dogs.api.ApiResponseStatus
 import com.dessoft.dogs.doglist.DogTasks
-import com.dessoft.dogs.machinelearning.ClassifierRepository
+import com.dessoft.dogs.machinelearning.ClassifierTasks
 import com.dessoft.dogs.machinelearning.DogRecognition
 import com.dessoft.dogs.model.Dog
-import com.hackaprende.dogedex.machinelearning.Classifier
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.nio.MappedByteBuffer
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val dogRepository: DogTasks
+    private val dogRepository: DogTasks,
+    private val classifierRepository: ClassifierTasks,
 ) : ViewModel() {
     //el _dog se puede manipular solo desde aca (viewmodel)
     private val _dog = MutableLiveData<Dog>()
@@ -39,16 +38,9 @@ class MainViewModel @Inject constructor(
     val dogRecognition: LiveData<DogRecognition>
         get() = _dogRecognition
 
-    private lateinit var classfierRepository: ClassifierRepository
-
-    fun setupClassifier(tfLiteModel: MappedByteBuffer, labels: List<String>) {
-        val classifier = Classifier(tfLiteModel, labels)
-        classfierRepository = ClassifierRepository(classifier)
-    }
-
     fun recognizeImage(imageProxy: ImageProxy) {
         viewModelScope.launch {
-            _dogRecognition.value = classfierRepository.recognizedImage(imageProxy)
+            _dogRecognition.value = classifierRepository.recognizedImage(imageProxy)
         }
     }
 

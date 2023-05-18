@@ -28,11 +28,7 @@ import com.dessoft.dogs.machinelearning.DogRecognition
 import com.dessoft.dogs.model.Dog
 import com.dessoft.dogs.model.User
 import com.dessoft.dogs.settings.SettingsActivity
-import com.dessoft.dogs.utils.LABEL_PATH
-import com.dessoft.dogs.utils.MODEL_PATH
-import com.hackaprende.dogedex.machinelearning.Classifier
 import dagger.hilt.android.AndroidEntryPoint
-import org.tensorflow.lite.support.common.FileUtil
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -48,7 +44,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var imageCapture: ImageCapture
     private lateinit var cameraExecutor: ExecutorService
     private var isCameraReady = false
-    private lateinit var classifier: Classifier
     private val viewModel: MainViewModel by viewModels()
 
     private val requestPermissionLauncher =
@@ -133,15 +128,6 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(DogDetailComposeActivity.DOG_KEY, dog)
         intent.putExtra(DogDetailComposeActivity.IS_RECOGNITION_KEY, true)
         startActivity(intent)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        //se cambio en la clase 60
-        viewModel.setupClassifier(
-            FileUtil.loadMappedFile(this@MainActivity, MODEL_PATH),
-            FileUtil.loadLabels(this@MainActivity, LABEL_PATH)
-        )
     }
 
     override fun onDestroy() {
