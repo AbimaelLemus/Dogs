@@ -4,11 +4,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.dessoft.dogs.R
+import androidx.lifecycle.viewModelScope
 import com.dessoft.dogs.api.ApiResponseStatus
 import com.dessoft.dogs.doglist.DogTasks
 import com.dessoft.dogs.model.Dog
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,11 +33,12 @@ class DogDetailViewModel @Inject constructor(
         get() = _status*/
 
     fun addDogToUser(dogId: Long) {
-        /*viewModelScope.launch {
+        viewModelScope.launch {
             status.value = ApiResponseStatus.Loading()
             handleAddDogToUserResponseStatus(dogRepository.addDogToUser(dogId))
-        }*/
-        status.value = ApiResponseStatus.Error(messageId = R.string.app_name)
+        }
+        //para mostrar el alert de error
+        // status.value = ApiResponseStatus.Error(messageId = R.string.app_name)
     }
 
     private fun handleAddDogToUserResponseStatus(apiResponseStatus: ApiResponseStatus<Any>) {

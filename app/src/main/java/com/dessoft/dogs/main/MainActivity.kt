@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -273,7 +274,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun enableTakePhotoButton(dogRecognition: DogRecognition) {
-        if (dogRecognition.confidence > 60.0) {
+        if (dogRecognition.confidence > 45.0) {
             binding.takePothoFab.alpha = 1f
             binding.takePothoFab.setOnClickListener {
                 viewModel.getDogByMlId(dogRecognition.id)
