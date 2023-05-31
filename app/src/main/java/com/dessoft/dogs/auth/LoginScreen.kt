@@ -33,7 +33,8 @@ fun LoginScreen(
     Scaffold(topBar = { LoginScreenToolbar() }) {
         Content(
             onLoginButtonClick = onLoginButtonClick,
-            onRegisterButtonClick = onRegisterButtonClick
+            onRegisterButtonClick = onRegisterButtonClick,
+            authViewModel = authViewModel,
         )
     }
 
@@ -43,6 +44,7 @@ fun LoginScreen(
 private fun Content(
     onLoginButtonClick: (String, String) -> Unit,
     onRegisterButtonClick: () -> Unit,
+    authViewModel: AuthViewModel
 ) {
 
     val email = remember {
@@ -67,7 +69,8 @@ private fun Content(
             email = email.value,
             onTextChanged = {
                 email.value = it
-            }
+            },
+            errorMessageId = authViewModel.emailError.value
         )
 
         AuthField(
@@ -79,7 +82,8 @@ private fun Content(
             onTextChanged = {
                 password.value = it
             },
-            visualTransformation = PasswordVisualTransformation()
+            visualTransformation = PasswordVisualTransformation(),
+            errorMessageId = authViewModel.passwordError.value
         )
 
         Button(

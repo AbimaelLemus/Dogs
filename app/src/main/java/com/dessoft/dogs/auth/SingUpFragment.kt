@@ -2,7 +2,6 @@ package com.dessoft.dogs.auth
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,7 +52,7 @@ class SingUpFragment : Fragment() {
 
         val email = binding.emailEdit.text.toString().trim()
         if (!isValidEmail(email)) {
-            binding.emailInput.error = getString(R.string.email_is_no_valid)
+            binding.emailInput.error = getString(R.string.email_is_not_valid)
             return
         }
 

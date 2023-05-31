@@ -17,7 +17,7 @@
     <string name="register">Register</string>
     <string name="confirm_password">Confirmar password</string>
     <string name="sign_up">Sing up</string>
-    <string name="email_is_no_valid">Email is nos valid</string>
+    <string name="email_is_not_valid">Email is not valid</string>
     <string name="password_is_not_valid">Password is not valid</string>
     <string name="passwords_do_not_match">Passwords do not match</string>
 
