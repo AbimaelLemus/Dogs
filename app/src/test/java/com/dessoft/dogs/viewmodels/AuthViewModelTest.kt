@@ -1,5 +1,6 @@
-package com.dessoft.dogs
+package com.dessoft.dogs.viewmodels
 
+import com.dessoft.dogs.R
 import com.dessoft.dogs.api.ApiResponseStatus
 import com.dessoft.dogs.auth.AuthTasks
 import com.dessoft.dogs.auth.AuthViewModel

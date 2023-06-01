@@ -1,5 +1,6 @@
-package com.dessoft.dogs
+package com.dessoft.dogs.viewmodels
 
+import com.dessoft.dogs.DogListViewModel
 import com.dessoft.dogs.api.ApiResponseStatus
 import com.dessoft.dogs.doglist.DogTasks
 import com.dessoft.dogs.model.Dog

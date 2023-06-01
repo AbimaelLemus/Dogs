@@ -1,4 +1,4 @@
-package com.dessoft.dogs
+package com.dessoft.dogs.viewmodels
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
